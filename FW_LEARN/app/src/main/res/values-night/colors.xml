@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <color name="fw_background">#101A2C</color>
+    <color name="fw_card">#19263C</color>
+    <color name="fw_ink">#ECF2FF</color>
+    <color name="fw_muted">#B0BFD8</color>
+    <color name="fw_blue">#8DADFF</color>
+    <color name="fw_blue_soft">#233B62</color>
+    <color name="fw_mint">#224E45</color>
+    <color name="fw_green">#81DABC</color>
+    <color name="fw_border">#34445E</color>
+    <color name="fw_track">#35445B</color>
+    <color name="fw_navy">#1B3554</color>
+    <color name="fw_on_navy">#FFFFFF</color>
+    <color name="fw_on_mint">#CEF5E8</color>
+    <color name="fw_danger">#FFA9B1</color>
+    <color name="fw_code">#12243D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="fw_on_primary">#102344</color>
+</resources>

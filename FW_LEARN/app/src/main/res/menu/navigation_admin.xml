@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_panel" android:icon="@drawable/ic_fw_grid" android:title="@string/nav_panel" />
+    <item android:id="@+id/nav_content" android:icon="@drawable/ic_fw_book" android:title="@string/nav_content" />
+    <item android:id="@+id/nav_results" android:icon="@drawable/ic_fw_stats" android:title="@string/nav_results" />
+    <item android:id="@+id/nav_account" android:icon="@drawable/ic_fw_user" android:title="@string/nav_account" />
+</menu>
