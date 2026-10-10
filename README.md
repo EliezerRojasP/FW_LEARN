@@ -23,3 +23,11 @@ Proyecto de Android con API en PHP y base de datos para XAMPP.
 Cuentas de prueba: `admin` / `AdminFW2026!` y `alumno` / `AlumnoFW2026!`.
 
 Apache y MySQL deben seguir encendidos mientras usan la app.
+
+## Capturas del proyecto
+
+![Administración de usuarios y lecciones](docs/capturas/administracion.png)
+
+![Acceso y cursos de programación](docs/capturas/acceso-cursos.png)
+
+![Lección, evaluación y progreso](docs/capturas/leccion-progreso.png)
