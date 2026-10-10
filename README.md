@@ -26,8 +26,8 @@ Apache y MySQL deben seguir encendidos mientras usan la app.
 
 ## Capturas del proyecto
 
-![Administración de usuarios y lecciones](docs/capturas/administracion.png)
-
 ![Acceso y cursos de programación](docs/capturas/acceso-cursos.png)
 
 ![Lección, evaluación y progreso](docs/capturas/leccion-progreso.png)
+
+![Administración de usuarios y lecciones](docs/capturas/administracion.png)
