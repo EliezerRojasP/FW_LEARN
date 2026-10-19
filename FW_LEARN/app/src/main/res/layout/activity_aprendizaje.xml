@@ -6,76 +6,76 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/lessonTitle"
+        android:id="@+id/tituloLeccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/fw_ink"
-        android:textSize="28sp"
+        android:textColor="@color/fw_tinta"
+        android:textSize="@dimen/texto_28"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/lessonSubtitle"
+        android:id="@+id/subtituloLeccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/lesson_read_hint"
-        android:textColor="@color/fw_muted"
-        android:textSize="14sp" />
+        android:layout_marginTop="@dimen/espacio_8"
+        android:layout_marginBottom="@dimen/espacio_10"
+        android:text="@string/sugerencia_lectura_leccion"
+        android:textColor="@color/fw_apagado"
+        android:textSize="@dimen/texto_14" />
 
     <TextView
-        android:id="@+id/completionState"
+        android:id="@+id/estadoFinalizacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/fw_green"
-        android:textSize="13sp" />
+        android:layout_marginBottom="@dimen/espacio_10"
+        android:textColor="@color/fw_verde"
+        android:textSize="@dimen/texto_13" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/lessonTabs"
+        android:id="@+id/pestanasLeccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@color/fw_background"
-        app:tabIndicatorColor="@color/fw_blue"
+        android:layout_marginBottom="@dimen/espacio_16"
+        android:background="@color/fw_fondo"
+        app:tabIndicatorColor="@color/fw_azul"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/fw_blue"
-        app:tabTextColor="@color/fw_muted" />
+        app:tabSelectedTextColor="@color/fw_azul"
+        app:tabTextColor="@color/fw_apagado" />
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.FW.Card"
+        style="@style/Widget.FW.Tarjeta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/fw_card">
+        android:layout_marginBottom="@dimen/espacio_16"
+        app:cardBackgroundColor="@color/fw_tarjeta">
 
         <LinearLayout
-            android:id="@+id/lessonBody"
+            android:id="@+id/cuerpoLeccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="18dp" />
+            android:padding="@dimen/espacio_18" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.FW.Card"
+        style="@style/Widget.FW.Tarjeta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/fw_mint"
+        app:cardBackgroundColor="@color/fw_menta"
         app:strokeWidth="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/espacio_16">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/practice_reminder"
-                android:textColor="@color/fw_on_mint"
-                android:textSize="14sp" />
+                android:text="@string/recordatorio_practica"
+                android:textColor="@color/fw_sobre_menta"
+                android:textSize="@dimen/texto_14" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

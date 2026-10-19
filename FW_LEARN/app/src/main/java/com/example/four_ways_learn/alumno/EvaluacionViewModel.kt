@@ -10,102 +10,102 @@ import retrofit2.Call
 
 data class EvaluationUi(
     val intento: IntentoEvaluacion? = null,
-    val index: Int = 0,
-    val loading: Boolean = false,
+    val indice: Int = 0,
+    val cargando: Boolean = false,
     val error: ApiError? = null,
     val resultado: ResultadoEvaluacion? = null
 )
 
-class EvaluacionViewModel(private val saved: SavedStateHandle) : ViewModel() {
+class EvaluacionViewModel(private val guardado: SavedStateHandle) : ViewModel() {
     private val gson = Gson()
-    private var attempt: IntentoEvaluacion? = saved.get<String>("intento_json")
+    private var intento: IntentoEvaluacion? = guardado.get<String>("intento_json")
         ?.let { runCatching { gson.fromJson(it, IntentoEvaluacion::class.java) }.getOrNull() }
-    private var index = saved.get<Int>("index") ?: 0
-    private val answers = mutableMapOf<Int, Int>()
-    private var result: ResultadoEvaluacion? = saved.get<String>("resultado_json")
+    private var indice = guardado.get<Int>("indice") ?: 0
+    private val respuestas = mutableMapOf<Int, Int>()
+    private var resultado: ResultadoEvaluacion? = guardado.get<String>("resultado_json")
         ?.let { runCatching { gson.fromJson(it, ResultadoEvaluacion::class.java) }.getOrNull() }
-    private var running: Call<*>? = null
-    val ui = MutableLiveData(EvaluationUi(attempt, index, resultado = result))
+    private var enCurso: Call<*>? = null
+    val interfaz = MutableLiveData(EvaluationUi(intento, indice, resultado = resultado))
 
     init {
-        saved.get<ArrayList<Int>>("preguntas")
-            ?.zip(saved.get<ArrayList<Int>>("alternativas").orEmpty())
-            ?.forEach { (p, a) -> answers[p] = a }
+        guardado.get<ArrayList<Int>>("preguntas")
+            ?.zip(guardado.get<ArrayList<Int>>("alternativas").orEmpty())
+            ?.forEach { (p, a) -> respuestas[p] = a }
     }
 
-    fun load(lesson: Int) {
-        if (attempt != null || result != null || running != null) return
-        val call = RetrofitClient.api.iniciar(IniciarEvaluacion(lesson)); running = call; publish(
-            loading = true
+    fun cargar(leccion: Int) {
+        if (intento != null || resultado != null || enCurso != null) return
+        val call = RetrofitClient.api.iniciar(IniciarEvaluacion(leccion)); enCurso = call; publicar(
+            cargando = true
         )
         ApiRepository.execute(call, { data ->
-            running = null
-            if (data == null || data.preguntas.isEmpty()) publish(error = ApiError(mensajeRes = R.string.error_empty_evaluation))
+            enCurso = null
+            if (data == null || data.preguntas.isEmpty()) publicar(error = ApiError(mensajeRes = R.string.error_evaluacion_vacia))
             else {
-                attempt = data; index = 0; persist(); publish()
+                intento = data; indice = 0; persistir(); publicar()
             }
-        }, { error -> running = null; publish(error = error) })
+        }, { error -> enCurso = null; publicar(error = error) })
     }
 
-    fun selected(question: Int) = answers[question]
-    fun answeredCount() = answers.size
-    fun choose(question: Int, option: Int) {
-        answers[question] = option; persist()
+    fun seleccionada(pregunta: Int) = respuestas[pregunta]
+    fun cantidadRespondidas() = respuestas.size
+    fun elegir(pregunta: Int, alternativa: Int) {
+        respuestas[pregunta] = alternativa; persistir()
     }
 
-    fun previous() {
-        if (index > 0 && running == null) {
-            index--; persist(); publish()
+    fun anterior() {
+        if (indice > 0 && enCurso == null) {
+            indice--; persistir(); publicar()
         }
     }
 
-    fun next() {
-        val a = attempt ?: return
-        if (running != null) return
-        val question = a.preguntas[index]
-        if (answers[question.id] == null) {
-            publish(error = ApiError(mensajeRes = R.string.error_choose_option)); return
+    fun siguiente() {
+        val a = intento ?: return
+        if (enCurso != null) return
+        val pregunta = a.preguntas[indice]
+        if (respuestas[pregunta.id] == null) {
+            publicar(error = ApiError(mensajeRes = R.string.error_elegir_opcion)); return
         }
-        if (index < a.preguntas.lastIndex) {
-            index++; persist(); publish()
-        } else submit()
+        if (indice < a.preguntas.lastIndex) {
+            indice++; persistir(); publicar()
+        } else enviar()
     }
 
-    fun retry(lesson: Int) {
-        if (attempt == null) load(lesson) else if (index == attempt!!.preguntas.lastIndex && answers.size == attempt!!.preguntas.size) submit() else publish()
+    fun reintentar(leccion: Int) {
+        if (intento == null) cargar(leccion) else if (indice == intento!!.preguntas.lastIndex && respuestas.size == intento!!.preguntas.size) enviar() else publicar()
     }
 
-    private fun submit() {
-        val a = attempt ?: return
-        if (running != null || result != null) return
-        val selected =
-            a.preguntas.mapNotNull { p -> answers[p.id]?.let { RespuestaAlumno(p.id, it) } }
-        if (selected.size != a.preguntas.size) {
-            publish(error = ApiError(mensajeRes = R.string.error_answer_all)); return
+    private fun enviar() {
+        val a = intento ?: return
+        if (enCurso != null || resultado != null) return
+        val seleccionada =
+            a.preguntas.mapNotNull { p -> respuestas[p.id]?.let { RespuestaAlumno(p.id, it) } }
+        if (seleccionada.size != a.preguntas.size) {
+            publicar(error = ApiError(mensajeRes = R.string.error_responder_todo)); return
         }
-        val call = RetrofitClient.api.enviar(EnviarEvaluacion(a.id_intento, selected)); running =
-            call; publish(loading = true)
+        val call = RetrofitClient.api.enviar(EnviarEvaluacion(a.id_intento, seleccionada)); enCurso =
+            call; publicar(cargando = true)
         ApiRepository.execute(
             call,
             { data ->
-                running = null; result =
-                data; persist(); publish(error = if (data == null) ApiError(mensajeRes = R.string.error_result_missing) else null)
+                enCurso = null; resultado =
+                data; persistir(); publicar(error = if (data == null) ApiError(mensajeRes = R.string.error_resultado_faltante) else null)
             },
-            { error -> running = null; publish(error = error) })
+            { error -> enCurso = null; publicar(error = error) })
     }
 
-    private fun persist() {
-        saved["intento_json"] = attempt?.let { gson.toJson(it) }; saved["resultado_json"] =
-            result?.let { gson.toJson(it) }; saved["index"] = index
-        saved["preguntas"] = ArrayList(answers.keys); saved["alternativas"] =
-            ArrayList(answers.values)
+    private fun persistir() {
+        guardado["intento_json"] = intento?.let { gson.toJson(it) }; guardado["resultado_json"] =
+            resultado?.let { gson.toJson(it) }; guardado["indice"] = indice
+        guardado["preguntas"] = ArrayList(respuestas.keys); guardado["alternativas"] =
+            ArrayList(respuestas.values)
     }
 
-    private fun publish(loading: Boolean = false, error: ApiError? = null) {
-        ui.value = EvaluationUi(attempt, index, loading, error, result)
+    private fun publicar(cargando: Boolean = false, error: ApiError? = null) {
+        interfaz.value = EvaluationUi(intento, indice, cargando, error, resultado)
     }
 
     override fun onCleared() {
-        running?.cancel(); super.onCleared()
+        enCurso?.cancel(); super.onCleared()
     }
 }

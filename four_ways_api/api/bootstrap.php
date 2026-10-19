@@ -1,63 +1,139 @@
 <?php
+
 declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
-set_exception_handler(function(Throwable $e): void {
-    error_log((string)$e);
-    $code = $e instanceof mysqli_sql_exception && $e->getCode() === 1062 ? 409 : 500;
-    respond(null, $code === 409 ? 'Ya existe un registro con esos datos.' : 'Error del servidor. Revisa el registro de Apache.', $code);
+set_exception_handler(function (Throwable $error): void {
+    error_log((string) $error);
+    $codigo = $error instanceof mysqli_sql_exception && $error->getCode() === 1062 ? 409 : 500;
+    respond(null, $codigo === 409 ? 'Ya existe un registro con esos datos.' : 'Error del servidor. Revisa el registro de Apache.', $codigo);
 });
 require_once __DIR__ . '/../config/conexion.php';
-function respond($data = null, string $message = '', int $status = 200): void {
+function respond($data = null, string $message = '', int $status = 200): void
+{
     http_response_code($status);
-    echo json_encode(['success'=>$status < 400, 'data'=>$data, 'mensaje'=>$message], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+    echo json_encode(['success' => $status < 400, 'data' => $data, 'mensaje' => $message], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
     exit;
 }
-function method(string $expected): void {
-    if ($_SERVER['REQUEST_METHOD'] !== $expected) { header('Allow: '.$expected); respond(null,'Método no permitido.',405); }
-}
-function body(): array {
-    if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 262144) respond(null,'Solicitud demasiado grande.',413);
-    try { $value=json_decode(file_get_contents('php://input'),true,64,JSON_THROW_ON_ERROR); }
-    catch(JsonException $e) { respond(null,'JSON inválido.',400); }
-    if (!is_array($value)) respond(null,'Se esperaba un objeto JSON.',400);
-    return $value;
-}
-function integer(array $a,string $key,int $min=1,int $max=2147483647): int {
-    $v=filter_var($a[$key] ?? null,FILTER_VALIDATE_INT);
-    if ($v === false || $v === null || $v < $min || $v > $max) respond(null,"Valor inválido: $key.",422);
-    return $v;
-}
-function txt(array $a,string $key,int $max,bool $optional=false): string {
-    if (!isset($a[$key]) && $optional) return '';
-    if (!isset($a[$key]) || !is_string($a[$key])) respond(null,"Texto inválido: $key.",422);
-    $v=trim($a[$key]);
-    if ((!$optional && $v === '') || mb_strlen($v) > $max) respond(null,"Longitud inválida: $key.",422);
-    return $v;
-}
-function query(string $sql,array $params=[]): mysqli_stmt {
-    global $conexion;
-    $s=$conexion->prepare($sql);
-    if ($params) {
-        $types=''; foreach($params as $p) $types.=is_int($p)?'i':(is_float($p)?'d':'s');
-        $s->bind_param($types,...$params);
+
+function method(string $expected): void
+{
+    if ($_SERVER['REQUEST_METHOD'] !== $expected) {
+        header('Allow: ' . $expected);
+        respond(null, 'Metodo no permitido.', 405);
     }
-    $s->execute(); return $s;
 }
-function rows(string $sql,array $params=[]): array { return query($sql,$params)->get_result()->fetch_all(MYSQLI_ASSOC); }
-function bearer(): string {
-    $h=$_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
-    if (!preg_match('/^Bearer ([a-f0-9]{64})$/D',$h,$m)) respond(null,'Inicia sesión nuevamente.',401);
-    return $m[1];
+
+function body(): array
+{
+    if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 262144) {
+        respond(null, 'Solicitud demasiado grande.', 413);
+    }
+    try {
+        $valor = json_decode(file_get_contents('php://input'), true, 64, JSON_THROW_ON_ERROR);
+    } catch (JsonException $error) {
+        respond(null, 'JSON invalido.', 400);
+    }
+    if (!is_array($valor)) {
+        respond(null, 'Se esperaba un objeto JSON.', 400);
+    }
+    return $valor;
 }
-function user(): array {
-    $token=hash('sha256',bearer());
-    $found=rows('SELECT u.id_usuario,u.id_rol,u.nombre,u.apellido,u.usuario,r.nombre AS rol FROM sesiones s JOIN usuarios u ON u.id_usuario=s.id_usuario JOIN roles r ON r.id_rol=u.id_rol WHERE s.token_hash=? AND s.expira>UTC_TIMESTAMP() AND u.estado=1',[$token]);
-    if (!$found) respond(null,'Tu sesión venció. Inicia sesión nuevamente.',401);
-    $u=$found[0];$u['id_usuario']=(int)$u['id_usuario'];$u['id_rol']=(int)$u['id_rol'];return $u;
+
+function integer(array $datos, string $campo, int $minimo = 1, int $maximo = 2147483647): int
+{
+    $valor = filter_var($datos[$campo] ?? null, FILTER_VALIDATE_INT);
+    if ($valor === false || $valor === null || $valor < $minimo || $valor > $maximo) {
+        respond(null, "Valor invalido: $campo.", 422);
+    }
+    return $valor;
 }
-function admin(): array { $u=user(); if($u['rol']!=='ADMIN') respond(null,'Esta operación requiere un administrador.',403);return $u; }
-function activeLesson(int $id): array {
-    $r=rows('SELECT l.* FROM lecciones l JOIN topicos t ON t.id_topico=l.id_topico JOIN cursos c ON c.id_curso=t.id_curso WHERE l.id_leccion=? AND l.estado=1 AND t.estado=1 AND c.estado=1',[$id]);
-    if(!$r) respond(null,'La lección no está disponible.',404);return $r[0];
+
+function txt(array $datos, string $campo, int $maximo, bool $optional = false): string
+{
+    if (!isset($datos[$campo]) && $optional) {
+        return '';
+    }
+    if (!isset($datos[$campo]) || !is_string($datos[$campo])) {
+        respond(null, "Texto invalido: $campo.", 422);
+    }
+    $valor = trim($datos[$campo]);
+    if ((!$optional && $valor === '') || mb_strlen($valor) > $maximo) {
+        respond(null, "Longitud invalida: $campo.", 422);
+    }
+    return $valor;
+}
+
+function query(string $sql, array $params = []): mysqli_stmt
+{
+    global $conexion;
+    $consulta = $conexion->prepare($sql);
+    if ($params) {
+        $tipos = '';
+        foreach ($params as $parametro) {
+            if (is_int($parametro)) {
+                $tipos .= 'i';
+            } elseif (is_float($parametro)) {
+                $tipos .= 'd';
+            } else {
+                $tipos .= 's';
+            }
+        }
+        $consulta->bind_param($tipos, ...$params);
+    }
+    $consulta->execute();
+    return $consulta;
+}
+
+function rows(string $sql, array $params = []): array
+{
+    return query($sql, $params)->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function bearer(): string
+{
+    $cabecera = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+    if (!preg_match('/^Bearer ([a-f0-9]{64})$/D', $cabecera, $coincidencias)) {
+        respond(null, 'Inicia sesion nuevamente.', 401);
+    }
+    return $coincidencias[1];
+}
+
+function user(): array
+{
+    $token = hash('sha256', bearer());
+    $usuarios = rows('SELECT u.id_usuario,u.id_rol,u.nombre,u.apellido,u.usuario,r.nombre AS rol
+        FROM sesiones s
+        JOIN usuarios u ON u.id_usuario=s.id_usuario
+        JOIN roles r ON r.id_rol=u.id_rol
+        WHERE s.token_hash=? AND s.expira>UTC_TIMESTAMP() AND u.estado=1', [$token]);
+    if (!$usuarios) {
+        respond(null, 'Tu sesion vencio. Inicia sesion nuevamente.', 401);
+    }
+    $usuario = $usuarios[0];
+    $usuario['id_usuario'] = (int) $usuario['id_usuario'];
+    $usuario['id_rol'] = (int) $usuario['id_rol'];
+    return $usuario;
+}
+
+function admin(): array
+{
+    $usuario = user();
+    if ($usuario['rol'] !== 'ADMIN') {
+        respond(null, 'Esta operacion requiere un administrador.', 403);
+    }
+    return $usuario;
+}
+
+function activeLesson(int $id): array
+{
+    $lecciones = rows('SELECT l.*
+        FROM lecciones l
+        JOIN topicos t ON t.id_topico=l.id_topico
+        JOIN cursos c ON c.id_curso=t.id_curso
+        WHERE l.id_leccion=? AND l.estado=1 AND t.estado=1 AND c.estado=1', [$id]);
+    if (!$lecciones) {
+        respond(null, 'La leccion no esta disponible.', 404);
+    }
+    return $lecciones[0];
 }

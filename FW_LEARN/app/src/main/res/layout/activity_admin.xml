@@ -8,22 +8,22 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/admin_panel_title"
-        android:textColor="@color/fw_ink"
-        android:textSize="27sp"
+        android:text="@string/titulo_panel_admin"
+        android:textColor="@color/fw_tinta"
+        android:textSize="@dimen/texto_27"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/admin_dashboard_hint"
-        android:textColor="@color/fw_muted"
-        android:textSize="15sp" />
+        android:layout_marginTop="@dimen/espacio_6"
+        android:layout_marginBottom="@dimen/espacio_20"
+        android:text="@string/sugerencia_panel_admin"
+        android:textColor="@color/fw_apagado"
+        android:textSize="@dimen/texto_15" />
 
     <LinearLayout
-        android:id="@+id/statsRow"
+        android:id="@+id/filaEstadisticas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" />
@@ -31,11 +31,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/management_title"
-        android:textColor="@color/fw_ink"
-        android:textSize="21sp"
+        android:layout_marginTop="@dimen/espacio_24"
+        android:layout_marginBottom="@dimen/espacio_10"
+        android:text="@string/titulo_gestion"
+        android:textColor="@color/fw_tinta"
+        android:textSize="@dimen/texto_21"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -44,11 +44,11 @@
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tileUsers"
-            style="@style/Widget.FW.Card"
-            android:layout_width="0dp"
+            android:id="@+id/tarjetaUsuarios"
+            style="@style/Widget.FW.Tarjeta"
+            android:layout_width="@dimen/espacio_0"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/espacio_5"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true">
@@ -57,42 +57,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:minHeight="76dp"
+                android:minHeight="@dimen/altura_76"
                 android:orientation="horizontal"
-                android:padding="14dp">
+                android:padding="@dimen/espacio_14">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="@dimen/espacio_26"
+                    android:layout_height="@dimen/espacio_26"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_users"
-                    app:tint="@color/fw_blue" />
+                    android:src="@drawable/icono_usuarios"
+                    app:tint="@color/fw_azul" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/espacio_10"
                     android:layout_weight="1"
-                    android:text="@string/module_users"
-                    android:textColor="@color/fw_ink"
-                    android:textSize="14sp"
+                    android:text="@string/modulo_usuarios"
+                    android:textColor="@color/fw_tinta"
+                    android:textSize="@dimen/texto_14"
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="@dimen/espacio_14"
+                    android:layout_height="@dimen/espacio_14"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_arrow"
-                    app:tint="@color/fw_muted" />
+                    android:src="@drawable/icono_flecha"
+                    app:tint="@color/fw_apagado" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tileCourses"
-            style="@style/Widget.FW.Card"
-            android:layout_width="0dp"
+            android:id="@+id/tarjetaCursos"
+            style="@style/Widget.FW.Tarjeta"
+            android:layout_width="@dimen/espacio_0"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/espacio_5"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true">
@@ -101,127 +101,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:minHeight="76dp"
+                android:minHeight="@dimen/altura_76"
                 android:orientation="horizontal"
-                android:padding="14dp">
+                android:padding="@dimen/espacio_14">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="@dimen/espacio_26"
+                    android:layout_height="@dimen/espacio_26"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_book"
-                    app:tint="@color/fw_blue" />
+                    android:src="@drawable/icono_libro"
+                    app:tint="@color/fw_azul" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/espacio_10"
                     android:layout_weight="1"
-                    android:text="@string/module_courses"
-                    android:textColor="@color/fw_ink"
-                    android:textSize="14sp"
+                    android:text="@string/modulo_cursos"
+                    android:textColor="@color/fw_tinta"
+                    android:textSize="@dimen/texto_14"
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="@dimen/espacio_14"
+                    android:layout_height="@dimen/espacio_14"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_arrow"
-                    app:tint="@color/fw_muted" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tileTopics"
-            style="@style/Widget.FW.Card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:minHeight="76dp"
-                android:orientation="horizontal"
-                android:padding="14dp">
-
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_grid"
-                    app:tint="@color/fw_blue" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:text="@string/module_topics"
-                    android:textColor="@color/fw_ink"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_arrow"
-                    app:tint="@color/fw_muted" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tileLessons"
-            style="@style/Widget.FW.Card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:minHeight="76dp"
-                android:orientation="horizontal"
-                android:padding="14dp">
-
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_lesson"
-                    app:tint="@color/fw_blue" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:text="@string/module_lessons"
-                    android:textColor="@color/fw_ink"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_arrow"
-                    app:tint="@color/fw_muted" />
+                    android:src="@drawable/icono_flecha"
+                    app:tint="@color/fw_apagado" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
@@ -232,11 +138,11 @@
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tileQuestions"
-            style="@style/Widget.FW.Card"
-            android:layout_width="0dp"
+            android:id="@+id/tarjetaTemas"
+            style="@style/Widget.FW.Tarjeta"
+            android:layout_width="@dimen/espacio_0"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/espacio_5"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true">
@@ -245,42 +151,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:minHeight="76dp"
+                android:minHeight="@dimen/altura_76"
                 android:orientation="horizontal"
-                android:padding="14dp">
+                android:padding="@dimen/espacio_14">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="@dimen/espacio_26"
+                    android:layout_height="@dimen/espacio_26"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_question"
-                    app:tint="@color/fw_blue" />
+                    android:src="@drawable/icono_cuadricula"
+                    app:tint="@color/fw_azul" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/espacio_10"
                     android:layout_weight="1"
-                    android:text="@string/short_questions"
-                    android:textColor="@color/fw_ink"
-                    android:textSize="14sp"
+                    android:text="@string/modulo_temas"
+                    android:textColor="@color/fw_tinta"
+                    android:textSize="@dimen/texto_14"
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="@dimen/espacio_14"
+                    android:layout_height="@dimen/espacio_14"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_arrow"
-                    app:tint="@color/fw_muted" />
+                    android:src="@drawable/icono_flecha"
+                    app:tint="@color/fw_apagado" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tileResults"
-            style="@style/Widget.FW.Card"
-            android:layout_width="0dp"
+            android:id="@+id/tarjetaLecciones"
+            style="@style/Widget.FW.Tarjeta"
+            android:layout_width="@dimen/espacio_0"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/espacio_5"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true">
@@ -289,53 +195,147 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:minHeight="76dp"
+                android:minHeight="@dimen/altura_76"
                 android:orientation="horizontal"
-                android:padding="14dp">
+                android:padding="@dimen/espacio_14">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="@dimen/espacio_26"
+                    android:layout_height="@dimen/espacio_26"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_stats"
-                    app:tint="@color/fw_blue" />
+                    android:src="@drawable/icono_leccion"
+                    app:tint="@color/fw_azul" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/espacio_10"
                     android:layout_weight="1"
-                    android:text="@string/nav_results"
-                    android:textColor="@color/fw_ink"
-                    android:textSize="14sp"
+                    android:text="@string/modulo_lecciones"
+                    android:textColor="@color/fw_tinta"
+                    android:textSize="@dimen/texto_14"
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="@dimen/espacio_14"
+                    android:layout_height="@dimen/espacio_14"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_arrow"
-                    app:tint="@color/fw_muted" />
+                    android:src="@drawable/icono_flecha"
+                    app:tint="@color/fw_apagado" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tarjetaPreguntas"
+            style="@style/Widget.FW.Tarjeta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/espacio_5"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/altura_76"
+                android:orientation="horizontal"
+                android:padding="@dimen/espacio_14">
+
+                <ImageView
+                    android:layout_width="@dimen/espacio_26"
+                    android:layout_height="@dimen/espacio_26"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/icono_pregunta"
+                    app:tint="@color/fw_azul" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/espacio_10"
+                    android:layout_weight="1"
+                    android:text="@string/preguntas_corto"
+                    android:textColor="@color/fw_tinta"
+                    android:textSize="@dimen/texto_14"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="@dimen/espacio_14"
+                    android:layout_height="@dimen/espacio_14"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/icono_flecha"
+                    app:tint="@color/fw_apagado" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tarjetaResultados"
+            style="@style/Widget.FW.Tarjeta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/espacio_5"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/altura_76"
+                android:orientation="horizontal"
+                android:padding="@dimen/espacio_14">
+
+                <ImageView
+                    android:layout_width="@dimen/espacio_26"
+                    android:layout_height="@dimen/espacio_26"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/icono_estadisticas"
+                    app:tint="@color/fw_azul" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/espacio_10"
+                    android:layout_weight="1"
+                    android:text="@string/nav_resultados"
+                    android:textColor="@color/fw_tinta"
+                    android:textSize="@dimen/texto_14"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="@dimen/espacio_14"
+                    android:layout_height="@dimen/espacio_14"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/icono_flecha"
+                    app:tint="@color/fw_apagado" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/statisticsCard"
-        style="@style/Widget.FW.Card"
+        android:id="@+id/tarjetaEstadisticas"
+        style="@style/Widget.FW.Tarjeta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/espacio_12"
         android:clickable="true"
         android:focusable="true"
-        app:cardBackgroundColor="@color/fw_mint"
+        app:cardBackgroundColor="@color/fw_menta"
         app:strokeWidth="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:padding="@dimen/espacio_18">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -344,42 +344,42 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="@dimen/espacio_32"
+                    android:layout_height="@dimen/espacio_32"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_stats"
-                    app:tint="@color/fw_on_mint" />
+                    android:src="@drawable/icono_estadisticas"
+                    app:tint="@color/fw_sobre_menta" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
+                    android:layout_marginStart="@dimen/espacio_14"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/module_stats"
-                        android:textColor="@color/fw_on_mint"
-                        android:textSize="18sp"
+                        android:text="@string/modulo_estadisticas"
+                        android:textColor="@color/fw_sobre_menta"
+                        android:textSize="@dimen/texto_18"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/admin_stats_hint"
-                        android:textColor="@color/fw_on_mint"
-                        android:textSize="13sp" />
+                        android:layout_marginTop="@dimen/espacio_4"
+                        android:text="@string/sugerencia_estadisticas_admin"
+                        android:textColor="@color/fw_sobre_menta"
+                        android:textSize="@dimen/texto_13" />
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="@dimen/espacio_18"
+                    android:layout_height="@dimen/espacio_18"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_arrow"
-                    app:tint="@color/fw_on_mint" />
+                    android:src="@drawable/icono_flecha"
+                    app:tint="@color/fw_sobre_menta" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

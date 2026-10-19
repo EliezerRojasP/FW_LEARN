@@ -8,59 +8,59 @@ import com.example.four_ways_learn.ui.BaseActivity
 
 class LeccionesActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState); screen(getString(R.string.module_lessons))
+        super.onCreate(savedInstanceState); pantalla(getString(R.string.modulo_lecciones))
     }
 
     override fun onResume() {
-        super.onResume(); load()
+        super.onResume(); cargar()
     }
 
-    private fun load() {
+    private fun cargar() {
         val id = intent.getIntExtra("topicoId", -1)
         if (id < 1) {
-            message(getString(R.string.error_topic_missing)); return
+            mensaje(getString(R.string.error_tema_faltante)); return
         }
-        request(RetrofitClient.api.lecciones(id)) { lessons ->
+        peticion(RetrofitClient.api.lecciones(id)) { lecciones ->
             panel.removeAllViews()
-            if (lessons.isNullOrEmpty()) {
-                message(getString(R.string.empty_lessons)); return@request
+            if (lecciones.isNullOrEmpty()) {
+                mensaje(getString(R.string.lecciones_vacias)); return@peticion
             }
-            val total = lessons.size;
-            val completed = lessons.count { it.completada == 1 }
-            progressSummary(
-                intent.getStringExtra("topicoNombre") ?: getString(R.string.your_topic),
-                completed,
+            val total = lecciones.size;
+            val completadas = lecciones.count { it.completada == 1 }
+            resumenProgreso(
+                intent.getStringExtra("topicoNombre") ?: getString(R.string.tu_tema),
+                completadas,
                 total,
-                completed * 100.0 / total
+                completadas * 100.0 / total
             )
-            panel.addView(text(getString(R.string.your_lessons_title), 22, true))
-            lessons.forEach { lesson ->
-                val state = when {
-                    lesson.completada == 1 -> getString(R.string.state_completed); lesson.total_preguntas == 0 -> getString(
-                        R.string.state_content_available
-                    ); else -> getString(R.string.state_pending)
+            panel.addView(text(getString(R.string.titulo_tus_lecciones), 22, true))
+            lecciones.forEach { leccion ->
+                val estadoActual = when {
+                    leccion.completada == 1 -> getString(R.string.estado_completada); leccion.total_preguntas == 0 -> getString(
+                        R.string.estado_contenido_disponible
+                    ); else -> getString(R.string.estado_pendiente)
                 }
-                val detail = getString(
-                    R.string.lesson_questions_detail,
-                    lesson.total_preguntas,
-                    getString(if (lesson.completada == 1) R.string.review_available else R.string.read_and_practice)
+                val detalle = getString(
+                    R.string.detalle_preguntas_leccion,
+                    leccion.total_preguntas,
+                    getString(if (leccion.completada == 1) R.string.repaso_disponible else R.string.leer_y_practicar)
                 )
-                val caption = if (lesson.completada == 1) getString(
-                    R.string.finished_best_grade,
-                    percent(lesson.mejor_puntaje)
-                ) else getString(R.string.lesson_progress_title)
-                progressCard(
-                    getString(R.string.numbered_lesson, lesson.orden, lesson.titulo),
-                    detail,
-                    lesson.porcentaje_avance,
-                    caption,
-                    state
+                val leyenda = if (leccion.completada == 1) getString(
+                    R.string.finalizada_mejor_nota,
+                    porcentajeTexto(leccion.mejor_puntaje)
+                ) else getString(R.string.titulo_progreso_leccion)
+                tarjetaProgreso(
+                    getString(R.string.leccion_numerada, leccion.orden, leccion.titulo),
+                    detalle,
+                    leccion.porcentaje_avance,
+                    leyenda,
+                    estadoActual
                 ) {
                     startActivity(
                         Intent(
                             this,
                             AprendizajeActivity::class.java
-                        ).putExtra("leccionId", lesson.id_leccion)
+                        ).putExtra("leccionId", leccion.id_leccion)
                     )
                 }
             }

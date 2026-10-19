@@ -10,7 +10,7 @@ import com.example.four_ways_learn.network.RetrofitClient
 import com.example.four_ways_learn.ui.BaseActivity
 
 class AdminActivity : BaseActivity() {
-    override val requiresAdmin = true
+    override val requiereAdmin = true
     private lateinit var content: ActivityAdminBinding
     private lateinit var courseStat: ItemStatCardBinding
     private lateinit var lessonStat: ItemStatCardBinding
@@ -18,51 +18,53 @@ class AdminActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        screen(getString(R.string.app_title), false)
+        pantalla(getString(R.string.titulo_app), false)
         content = ActivityAdminBinding.inflate(layoutInflater, panel, true)
-        fun stat(label: Int, icon: Int): ItemStatCardBinding {
-            val card = ItemStatCardBinding.inflate(layoutInflater, content.statsRow, false)
-            card.statLabel.setText(label); card.statIcon.setImageResource(icon)
-            card.statNumber.text = getString(R.string.stat_placeholder)
-            content.statsRow.addView(
-                card.root,
+        fun estadistica(etiqueta: Int, icono: Int): ItemStatCardBinding {
+            val tarjeta = ItemStatCardBinding.inflate(layoutInflater, content.filaEstadisticas, false)
+            tarjeta.etiquetaEstadistica.setText(etiqueta); tarjeta.iconoEstadistica.setImageResource(icono)
+            tarjeta.numeroEstadistica.text = getString(R.string.marcador_estadistica)
+            content.filaEstadisticas.addView(
+                tarjeta.root,
                 LinearLayout.LayoutParams(0, -2, 1f).apply { marginEnd = dp(6) })
-            return card
+            return tarjeta
         }
-        courseStat = stat(R.string.module_courses, R.drawable.ic_fw_book)
-        lessonStat = stat(R.string.module_lessons, R.drawable.ic_fw_lesson)
-        questionStat = stat(R.string.short_questions, R.drawable.ic_fw_question)
-        val modules = listOf(
-            Triple(content.tileUsers, "usuarios", R.string.module_users),
-            Triple(content.tileCourses, "cursos", R.string.module_courses),
-            Triple(content.tileTopics, "topicos", R.string.module_topics),
-            Triple(content.tileLessons, "lecciones", R.string.module_lessons),
-            Triple(content.tileQuestions, "preguntas", R.string.short_questions),
-            Triple(content.tileResults, "resultados", R.string.nav_results),
-            Triple(content.statisticsCard, "estadisticas", R.string.module_stats)
-        )
-        modules.forEach { (view, resource, label) ->
-            view.setOnClickListener {
-                startActivity(
-                    Intent(this, AdminListActivity::class.java)
-                        .putExtra("recurso", resource).putExtra("titulo", getString(label))
-                )
-            }
+        courseStat = estadistica(R.string.modulo_cursos, R.drawable.icono_libro)
+        lessonStat = estadistica(R.string.modulo_lecciones, R.drawable.icono_leccion)
+        questionStat = estadistica(R.string.preguntas_corto, R.drawable.icono_pregunta)
+        content.tarjetaCursos.setOnClickListener {
+            startActivity(Intent(this, AdminCursosActivity::class.java))
+        }
+        content.tarjetaTemas.setOnClickListener {
+            startActivity(Intent(this, AdminTemasActivity::class.java))
+        }
+        content.tarjetaLecciones.setOnClickListener {
+            startActivity(Intent(this, AdminLeccionesActivity::class.java))
+        }
+        content.tarjetaUsuarios.setOnClickListener {
+            startActivity(Intent(this, AdminUsuariosActivity::class.java))
+        }
+        content.tarjetaResultados.setOnClickListener {
+            startActivity(Intent(this, AdminResultadosActivity::class.java))
+        }
+        content.tarjetaEstadisticas.setOnClickListener {
+            startActivity(Intent(this, AdminEstadisticasActivity::class.java))
+        }
+        content.tarjetaPreguntas.setOnClickListener {
+            startActivity(Intent(this, AdminPreguntasActivity::class.java))
         }
     }
 
     override fun onResume() {
         super.onResume()
-        request(RetrofitClient.api.adminList("estadisticas")) { data ->
-            val stats = data?.takeIf { it.isJsonObject }?.asJsonObject ?: return@request
-            courseStat.statNumber.text = stats.get("cursos")?.asString.orEmpty()
-            lessonStat.statNumber.text = stats.get("lecciones")?.asString.orEmpty()
+        peticion(RetrofitClient.api.estadisticasAdmin()) { stats ->
+            if (stats == null) return@peticion
+            courseStat.numeroEstadistica.text = getString(R.string.estadistica_entero, stats.cursos)
+            lessonStat.numeroEstadistica.text = getString(R.string.estadistica_entero, stats.lecciones)
         }
-        request(RetrofitClient.api.adminList("preguntas")) { data ->
-            val count =
-                data?.takeIf { it.isJsonArray }?.asJsonArray?.count { it.asJsonObject.get("estado")?.asInt == 1 }
-                    ?: 0
-            questionStat.statNumber.text = getString(R.string.stat_integer, count)
+        peticion(RetrofitClient.api.preguntasAdmin()) { preguntas ->
+            val count = preguntas.orEmpty().count { it.estado == 1 }
+            questionStat.numeroEstadistica.text = getString(R.string.estadistica_entero, count)
         }
     }
 }

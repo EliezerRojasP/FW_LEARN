@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_panel" android:icon="@drawable/icono_cuadricula" android:title="@string/nav_panel" />
+    <item android:id="@+id/nav_contenido" android:icon="@drawable/icono_libro" android:title="@string/nav_contenido" />
+    <item android:id="@+id/nav_resultados" android:icon="@drawable/icono_estadisticas" android:title="@string/nav_resultados" />
+    <item android:id="@+id/nav_cuenta" android:icon="@drawable/icono_usuario" android:title="@string/nav_cuenta" />
+</menu>

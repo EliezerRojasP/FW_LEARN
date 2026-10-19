@@ -1,109 +1,109 @@
 <?xml version='1.0' encoding='utf-8'?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/shellRoot"
+    android:id="@+id/raizArmazon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fw_background"
+    android:background="@color/fw_fondo"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/header"
+        android:id="@+id/encabezado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:minHeight="68dp"
+        android:minHeight="@dimen/altura_68"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingStart="@dimen/espacio_16"
+        android:paddingTop="@dimen/espacio_8"
+        android:paddingEnd="@dimen/espacio_16"
+        android:paddingBottom="@dimen/espacio_8">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/backButton"
+            android:id="@+id/botonAtras"
             style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/action_back"
+            android:layout_width="@dimen/espacio_48"
+            android:layout_height="@dimen/espacio_48"
+            android:contentDescription="@string/accion_volver"
             android:minWidth="0dp"
-            android:padding="12dp"
-            app:icon="@drawable/ic_fw_back"
+            android:padding="@dimen/espacio_12"
+            app:icon="@drawable/icono_atras"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="24dp" />
 
         <ImageView
-            android:id="@+id/brandIcon"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_marginEnd="10dp"
+            android:id="@+id/iconoMarca"
+            android:layout_width="@dimen/espacio_34"
+            android:layout_height="@dimen/espacio_34"
+            android:layout_marginEnd="@dimen/espacio_10"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_fw_brand" />
+            android:src="@drawable/icono_marca" />
 
         <TextView
-            android:id="@+id/headerTitle"
+            android:id="@+id/tituloEncabezado"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/app_title"
-            android:textColor="@color/fw_ink"
-            android:textSize="18sp"
+            android:text="@string/titulo_app"
+            android:textColor="@color/fw_tinta"
+            android:textSize="@dimen/texto_18"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/adminBadge"
+            android:id="@+id/insigniaAdmin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/bg_admin_badge"
-            android:padding="8dp"
-            android:text="@string/admin_badge"
-            android:textColor="@color/fw_green"
-            android:textSize="11sp"
+            android:layout_marginEnd="@dimen/espacio_8"
+            android:background="@drawable/fondo_insignia_admin"
+            android:padding="@dimen/espacio_8"
+            android:text="@string/insignia_admin"
+            android:textColor="@color/fw_verde"
+            android:textSize="@dimen/texto_11"
             android:textStyle="bold"
             android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/accountButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/nav_account"
+            android:id="@+id/botonCuenta"
+            android:layout_width="@dimen/espacio_48"
+            android:layout_height="@dimen/espacio_48"
+            android:contentDescription="@string/nav_cuenta"
             android:minWidth="0dp"
-            android:padding="0dp"
-            android:textColor="@color/fw_ink"
-            app:backgroundTint="@color/fw_blue_soft"
+            android:padding="@dimen/espacio_0"
+            android:textColor="@color/fw_tinta"
+            app:backgroundTint="@color/fw_azul_suave"
             app:cornerRadius="22dp" />
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/cargando"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="@dimen/espacio_3"
         android:indeterminate="true"
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/statusMessage"
+        android:id="@+id/textoEstado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:accessibilityLiveRegion="polite"
-        android:padding="16dp"
-        android:textColor="@color/fw_danger"
-        android:textSize="15sp"
+        android:padding="@dimen/espacio_16"
+        android:textColor="@color/fw_peligro"
+        android:textSize="@dimen/texto_15"
         android:visibility="gone" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/retryButton"
+        android:id="@+id/botonReintentar"
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/action_retry"
+        android:text="@string/accion_reintentar"
         android:visibility="gone" />
 
     <ScrollView
-        android:id="@+id/contentScroll"
+        android:id="@+id/scrollContenido"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -112,35 +112,43 @@
         android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/contentPanel"
+            android:id="@+id/panelContenido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="20dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="24dp" />
+            android:paddingStart="@dimen/espacio_20"
+            android:paddingTop="@dimen/espacio_12"
+            android:paddingEnd="@dimen/espacio_20"
+            android:paddingBottom="@dimen/espacio_24" />
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/bottomActions"
+        android:id="@+id/contenidoLista"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/accionesInferiores"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/fw_background"
+        android:background="@color/fw_fondo"
         android:orientation="horizontal"
-        android:paddingStart="20dp"
-        android:paddingTop="6dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="10dp"
+        android:paddingStart="@dimen/espacio_20"
+        android:paddingTop="@dimen/espacio_6"
+        android:paddingEnd="@dimen/espacio_20"
+        android:paddingBottom="@dimen/espacio_10"
         android:visibility="gone" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+        android:id="@+id/navegacionInferior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/fw_card"
-        app:itemActiveIndicatorStyle="@style/Widget.FW.NavIndicator"
-        app:itemIconTint="@color/nav_colors"
-        app:itemTextColor="@color/nav_colors"
+        android:background="@color/fw_tarjeta"
+        app:itemActiveIndicatorStyle="@style/Widget.FW.IndicadorNavegacion"
+        app:itemIconTint="@color/colores_navegacion"
+        app:itemTextColor="@color/colores_navegacion"
         app:labelVisibilityMode="labeled" />
 </LinearLayout>

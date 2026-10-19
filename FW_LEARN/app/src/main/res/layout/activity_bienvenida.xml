@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/saludo"
+        android:layout_width="wrap_content"
+        android:textColor="@color/negro"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/subtitulo"
+        android:layout_width="wrap_content"
+        android:textColor="@color/negro"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:id="@+id/contenedorDestacado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacio_16" />
+
+    <TextView
+        android:id="@+id/tituloEstadisticas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacio_24"
+        android:textColor="@color/fw_tinta"
+        android:text="@string/titulo_estadisticas_inicio" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacio_12"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/progresoEstadistica"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/negro"
+            android:padding="@dimen/espacio_12" />
+
+        <TextView
+            android:id="@+id/estadisticaLecciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/negro"
+            android:padding="@dimen/espacio_12" />
+
+        <TextView
+            android:id="@+id/estadisticaCursos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/negro"
+            android:padding="@dimen/espacio_12" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tituloPendientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacio_24"
+        android:textColor="@color/negro"
+        android:text="@string/titulo_pendientes_inicio" />
+
+    <LinearLayout
+        android:id="@+id/listaPendientes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacio_12"
+        android:orientation="vertical" />
+</LinearLayout>

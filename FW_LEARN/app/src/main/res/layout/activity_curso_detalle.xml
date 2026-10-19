@@ -8,100 +8,100 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/espacio_16"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/heroIcon"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/bg_admin_badge"
+            android:id="@+id/iconoPrincipal"
+            android:layout_width="@dimen/espacio_80"
+            android:layout_height="@dimen/espacio_80"
+            android:background="@drawable/fondo_insignia_admin"
             android:importantForAccessibility="no"
-            android:padding="16dp"
-            android:src="@drawable/ic_fw_code"
-            app:tint="@color/fw_ink" />
+            android:padding="@dimen/espacio_16"
+            android:src="@drawable/icono_codigo"
+            app:tint="@color/fw_tinta" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/espacio_16"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/courseName"
+                android:id="@+id/nombreCurso"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/fw_ink"
-                android:textSize="24sp"
+                android:textColor="@color/fw_tinta"
+                android:textSize="@dimen/texto_24"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/course_chip"
-                android:textColor="@color/fw_blue"
-                android:textSize="12sp"
+                android:layout_marginTop="@dimen/espacio_8"
+                android:text="@string/chip_curso"
+                android:textColor="@color/fw_azul"
+                android:textSize="@dimen/texto_12"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
     <TextView
-        android:id="@+id/courseDescription"
+        android:id="@+id/descripcionCurso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:textColor="@color/fw_muted"
-        android:textSize="15sp" />
+        android:layout_marginBottom="@dimen/espacio_20"
+        android:textColor="@color/fw_apagado"
+        android:textSize="@dimen/texto_15" />
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.FW.Card"
+        style="@style/Widget.FW.Tarjeta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        app:cardBackgroundColor="@color/fw_card">
+        android:layout_marginBottom="@dimen/espacio_24"
+        app:cardBackgroundColor="@color/fw_tarjeta">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:padding="@dimen/espacio_18">
 
             <TextView
-                android:id="@+id/completedCount"
+                android:id="@+id/conteoCompletadas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/fw_ink"
-                android:textSize="15sp"
+                android:textColor="@color/fw_tinta"
+                android:textSize="@dimen/texto_15"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/espacio_10"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/totalProgress"
+                    android:id="@+id/progresoTotal"
                     android:layout_width="0dp"
-                    android:layout_height="12dp"
+                    android:layout_height="@dimen/espacio_12"
                     android:layout_weight="1"
                     android:max="10000"
-                    app:indicatorColor="@color/fw_blue"
-                    app:trackColor="@color/fw_track"
-                    app:trackCornerRadius="4dp"
+                    app:indicatorColor="@color/fw_azul"
+                    app:trackColor="@color/fw_pista"
+                    app:trackCornerRadius="@dimen/espacio_4"
                     app:trackThickness="7dp" />
 
                 <TextView
-                    android:id="@+id/totalPercent"
+                    android:id="@+id/porcentajeTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:textColor="@color/fw_ink"
-                    android:textSize="14sp"
+                    android:layout_marginStart="@dimen/espacio_12"
+                    android:textColor="@color/fw_tinta"
+                    android:textSize="@dimen/texto_14"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -110,14 +110,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
-        android:text="@string/module_topics"
-        android:textColor="@color/fw_ink"
-        android:textSize="22sp"
+        android:layout_marginBottom="@dimen/espacio_14"
+        android:text="@string/modulo_temas"
+        android:textColor="@color/fw_tinta"
+        android:textSize="@dimen/texto_22"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/topicList"
+        android:id="@+id/listaTemas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />

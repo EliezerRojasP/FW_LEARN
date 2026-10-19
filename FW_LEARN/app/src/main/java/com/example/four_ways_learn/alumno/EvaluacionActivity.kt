@@ -17,172 +17,172 @@ import com.google.android.material.radiobutton.MaterialRadioButton
 class EvaluacionActivity : BaseActivity() {
     private lateinit var vm: EvaluacionViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState); screen(getString(R.string.evaluation_title))
+        super.onCreate(savedInstanceState); pantalla(getString(R.string.titulo_evaluacion))
         val id = intent.getIntExtra("leccionId", -1)
         if (id < 1) {
-            message(getString(R.string.error_lesson_missing)); return
+            mensaje(getString(R.string.error_leccion_faltante)); return
         }
         vm = ViewModelProvider(this)[EvaluacionViewModel::class.java]
-        vm.ui.observe(this) { state ->
-            progress.visibility = if (state.loading) View.VISIBLE else View.GONE
-            retry.visibility = View.GONE; status.visibility = View.GONE
-            if (state.error?.status == 401) {
-                SessionStore.clear(); toLogin(); return@observe
+        vm.interfaz.observe(this) { estadoActual ->
+            progreso.visibility = if (estadoActual.cargando) View.VISIBLE else View.GONE
+            reintentar.visibility = View.GONE; mensajeEstado.visibility = View.GONE
+            if (estadoActual.error?.mensajeEstado == 401) {
+                SessionStore.clear(); irALogin(); return@observe
             }
-            state.error?.let { error ->
-                message(error.localizedMessage(this)); retry.visibility =
-                View.VISIBLE; retry.setOnClickListener { vm.retry(id) }
+            estadoActual.error?.let { error ->
+                mensaje(error.localizedMessage(this)); reintentar.visibility =
+                View.VISIBLE; reintentar.setOnClickListener { vm.reintentar(id) }
             }
             panel.removeAllViews(); bottomActions()
-            state.resultado?.let { result -> showResult(result); return@observe }
-            val attempt = state.intento ?: return@observe
+            estadoActual.resultado?.let { resultado -> showResult(resultado); return@observe }
+            val intento = estadoActual.intento ?: return@observe
 
-            val question = attempt.preguntas[state.index]
-            val form = ActivityEvaluacionBinding.inflate(layoutInflater, panel, true)
-            val total = attempt.preguntas.size
-            form.questionTitle.text = question.enunciado
-            form.questionPosition.text =
-                getString(R.string.question_position, state.index + 1, total)
-            updateProgress(form.questionProgress, (state.index + 1) * 100.0 / total)
-            form.answersCaption.text =
-                getString(R.string.answers_selected_count, vm.answeredCount(), total)
-            val letters = listOf(
-                R.string.option_letter_a,
-                R.string.option_letter_b,
-                R.string.option_letter_c,
-                R.string.option_letter_d,
-                R.string.option_letter_e,
-                R.string.option_letter_f
+            val pregunta = intento.preguntas[estadoActual.indice]
+            val formulario = ActivityEvaluacionBinding.inflate(layoutInflater, panel, true)
+            val total = intento.preguntas.size
+            formulario.tituloPregunta.text = pregunta.enunciado
+            formulario.posicionPregunta.text =
+                getString(R.string.posicion_pregunta, estadoActual.indice + 1, total)
+            actualizarProgreso(formulario.progresoPregunta, (estadoActual.indice + 1) * 100.0 / total)
+            formulario.leyendaRespuestas.text =
+                getString(R.string.conteo_respuestas_seleccionadas, vm.cantidadRespondidas(), total)
+            val letras = listOf(
+                R.string.letra_opcion_a,
+                R.string.letra_opcion_b,
+                R.string.letra_opcion_c,
+                R.string.letra_opcion_d,
+                R.string.letra_opcion_e,
+                R.string.letra_opcion_f
             )
-            val group = form.answerGroup
-            question.alternativas.forEachIndexed { index, option ->
-                val radio = MaterialRadioButton(this).apply {
-                    this.id = View.generateViewId(); tag = option.id
-                    text = getString(R.string.quiz_option, getString(letters[index]), option.texto)
-                    textSize = 16f; minHeight = dp(68); setTextColor(color(R.color.fw_ink))
+            val grupo = formulario.grupoRespuestas
+            pregunta.alternativas.forEachIndexed { indice, alternativa ->
+                val botonRadio = MaterialRadioButton(this).apply {
+                    this.id = View.generateViewId(); tag = alternativa.id
+                    text = getString(R.string.opcion_cuestionario, getString(letras[indice]), alternativa.texto)
+                    textSize = 16f; minHeight = dp(68); setTextColor(color(R.color.fw_tinta))
                     buttonTintList = ColorStateList(
                         arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
-                        intArrayOf(color(R.color.fw_blue), color(R.color.fw_muted))
+                        intArrayOf(color(R.color.fw_azul), color(R.color.fw_apagado))
                     )
-                    setPadding(dp(12), dp(14), dp(12), dp(14)); isEnabled = !state.loading
-                    setBackgroundResource(R.drawable.bg_answer)
+                    setPadding(dp(12), dp(14), dp(12), dp(14)); isEnabled = !estadoActual.cargando
+                    setBackgroundResource(R.drawable.fondo_respuesta)
                 }
-                group.addView(
-                    radio,
+                grupo.addView(
+                    botonRadio,
                     RadioGroup.LayoutParams(-1, -2).apply { bottomMargin = dp(12) })
-                if (vm.selected(question.id) == option.id) group.check(radio.id)
+                if (vm.seleccionada(pregunta.id) == alternativa.id) grupo.check(botonRadio.id)
             }
-            group.setOnCheckedChangeListener { _, checked ->
-                if (checked != -1) {
-                    val radio = group.findViewById<MaterialRadioButton>(checked)
-                    vm.choose(question.id, radio.tag as Int)
-                    form.answersCaption.text =
-                        getString(R.string.answers_selected_count, vm.answeredCount(), total)
+            grupo.setOnCheckedChangeListener { _, marcado ->
+                if (marcado != -1) {
+                    val botonRadio = grupo.findViewById<MaterialRadioButton>(marcado)
+                    vm.elegir(pregunta.id, botonRadio.tag as Int)
+                    formulario.leyendaRespuestas.text =
+                        getString(R.string.conteo_respuestas_seleccionadas, vm.cantidadRespondidas(), total)
                 }
             }
             bottomActions(
-                secondary(getString(R.string.action_previous_short)) { vm.previous() }.apply {
-                    isEnabled = !state.loading && state.index > 0
+                secundario(getString(R.string.accion_anterior_corto)) { vm.anterior() }.apply {
+                    isEnabled = !estadoActual.cargando && estadoActual.indice > 0
                 },
-                button(getString(if (state.index == attempt.preguntas.lastIndex) R.string.action_finish_lesson else R.string.action_next_short)) { vm.next() }.apply {
-                    isEnabled = !state.loading
+                boton(getString(if (estadoActual.indice == intento.preguntas.lastIndex) R.string.accion_finalizar_leccion else R.string.accion_siguiente_corto)) { vm.siguiente() }.apply {
+                    isEnabled = !estadoActual.cargando
                 }
             )
-            shell.contentScroll.post { shell.contentScroll.scrollTo(0, 0) }
+            marco.scrollContenido.post { marco.scrollContenido.scrollTo(0, 0) }
         }
-        vm.load(id)
+        vm.cargar(id)
     }
 
-    private fun showResult(result: ResultadoEvaluacion) {
-        panel.addView(badge(getString(R.string.lesson_completed)))
+    private fun showResult(resultado: ResultadoEvaluacion) {
+        panel.addView(insignia(getString(R.string.leccion_completada)))
         panel.addView(
             text(
-                intent.getStringExtra("leccionTitulo") ?: getString(R.string.your_lesson), 27, true
+                intent.getStringExtra("leccionTitulo") ?: getString(R.string.tu_leccion), 27, true
             )
         )
-        box { inside ->
-            inside.addView(text(getString(R.string.evaluation_result_title), 20, true))
-            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-            for ((label, value) in listOf(
-                getString(R.string.completion_label) to result.porcentaje_finalizacion,
-                getString(R.string.grade_label) to result.porcentaje
+        caja { inside ->
+            inside.addView(text(getString(R.string.titulo_resultado_evaluacion), 20, true))
+            val fila = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            for ((etiqueta, valor) in listOf(
+                getString(R.string.etiqueta_finalizacion) to resultado.porcentaje_finalizacion,
+                getString(R.string.etiqueta_nota) to resultado.porcentaje
             )) {
-                val column = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-                column.addView(muted(label, 13)); column.addView(
+                val columna = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+                columna.addView(atenuado(etiqueta, 13)); columna.addView(
                     text(
-                        percent(value),
+                        porcentajeTexto(valor),
                         30,
                         true
-                    ).apply { setTextColor(color(R.color.fw_green)) })
-                row.addView(column, LinearLayout.LayoutParams(0, -2, 1f))
+                    ).apply { setTextColor(color(R.color.fw_verde)) })
+                fila.addView(columna, LinearLayout.LayoutParams(0, -2, 1f))
             }
-            inside.addView(row); inside.addView(progressBar(result.porcentaje_finalizacion))
+            inside.addView(fila); inside.addView(barraProgreso(resultado.porcentaje_finalizacion))
             inside.addView(
-                muted(
+                atenuado(
                     getString(
-                        R.string.evaluation_grade,
-                        result.puntaje.toInt(),
-                        result.total_preguntas,
-                        percent(result.porcentaje)
+                        R.string.nota_evaluacion,
+                        resultado.puntaje.toInt(),
+                        resultado.total_preguntas,
+                        porcentajeTexto(resultado.porcentaje)
                     ), 14
                 )
             )
-            inside.addView(muted(getString(R.string.results_hint), 13))
+            inside.addView(atenuado(getString(R.string.sugerencia_resultados), 13))
         }
-        panel.addView(muted(getString(if (result.aprobada) R.string.evaluation_passed else R.string.evaluation_review_hint)))
-        result.tema?.let { topic ->
-            progressCard(
-                topic.nombre,
-                getString(R.string.topic_progress_title),
-                topic.porcentaje_avance,
+        panel.addView(atenuado(getString(if (resultado.aprobada) R.string.evaluacion_aprobada else R.string.sugerencia_revision_evaluacion)))
+        resultado.tema?.let { tema ->
+            tarjetaProgreso(
+                tema.nombre,
+                getString(R.string.titulo_progreso_tema),
+                tema.porcentaje_avance,
                 getString(
-                    R.string.lessons_count,
-                    topic.lecciones_completadas,
-                    topic.total_lecciones
+                    R.string.conteo_lecciones,
+                    tema.lecciones_completadas,
+                    tema.total_lecciones
                 ),
-                progressState(topic.lecciones_completadas, topic.total_lecciones)
+                estadoProgreso(tema.lecciones_completadas, tema.total_lecciones)
             ) {
                 startActivity(
                     Intent(this, LeccionesActivity::class.java).putExtra(
                         "topicoId",
-                        topic.id
-                    ).putExtra("topicoNombre", topic.nombre)
+                        tema.id
+                    ).putExtra("topicoNombre", tema.nombre)
                 )
             }
         }
 
-        val backToTopic = outlined(getString(R.string.action_back_topic)) {
-            val topicId = result.tema?.id ?: intent.getIntExtra("topicoId", -1)
+        val backToTopic = contorno(getString(R.string.accion_volver_tema)) {
+            val topicId = resultado.tema?.id ?: intent.getIntExtra("topicoId", -1)
             if (topicId > 0) startActivity(
                 Intent(this, LeccionesActivity::class.java).putExtra("topicoId", topicId)
-                    .putExtra("topicoNombre", result.tema?.nombre)
+                    .putExtra("topicoNombre", resultado.tema?.nombre)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             )
             finish()
         }
-        if (isAdmin) bottomActions(backToTopic)
+        if (esAdmin) bottomActions(backToTopic)
         else bottomActions(
             backToTopic,
-            button(getString(R.string.action_view_progress)) { navigate(ProgresoActivity::class.java) })
-        panel.addView(text(getString(R.string.review_answers_title), 22, true))
-        result.revision.forEach { review ->
-            box { inside ->
+            boton(getString(R.string.accion_ver_progreso)) { navegar(ProgresoActivity::class.java) })
+        panel.addView(text(getString(R.string.titulo_revisar_respuestas), 22, true))
+        resultado.revision.forEach { review ->
+            caja { inside ->
                 inside.addView(
                     text(
                         getString(
-                            R.string.review_question,
-                            getString(if (review.correcta) R.string.correct_symbol else R.string.incorrect_symbol),
+                            R.string.pregunta_revision,
+                            getString(if (review.correcta) R.string.simbolo_correcto else R.string.simbolo_incorrecto),
                             review.enunciado
                         ), 16, true
-                    ).apply { setTextColor(color(if (review.correcta) R.color.fw_green else R.color.fw_danger)) })
+                    ).apply { setTextColor(color(if (review.correcta) R.color.fw_verde else R.color.fw_peligro)) })
                 inside.addView(
-                    muted(
-                        getString(R.string.correct_answer, review.respuesta_correcta),
+                    atenuado(
+                        getString(R.string.respuesta_correcta, review.respuesta_correcta),
                         14
                     )
                 )
             }
         }
-        shell.contentScroll.post { shell.contentScroll.scrollTo(0, 0) }
+        marco.scrollContenido.post { marco.scrollContenido.scrollTo(0, 0) }
     }
 }

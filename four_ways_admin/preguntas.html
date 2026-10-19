@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Preguntas · Four Ways Learn</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <script defer src="js/config.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/comun.js"></script>
+    <script defer src="js/preguntas.js"></script>
+  </head>
+  <body>
+    <p id="mensaje" class="mensaje" role="alert" hidden></p>
+    <button
+      id="reintentar"
+      class="boton-secundario reintentar"
+      onclick="window.location.reload()"
+      hidden
+    >
+      Volver a intentar
+    </button>
+    <div id="aplicacion" hidden>
+      <aside class="menu">
+        <a href="panel.html" class="marca"
+          ><span class="logo">&lt;/&gt;</span
+          ><span>Four Ways<br />Learn</span></a
+        >
+        <small>ADMINISTRACIÓN</small>
+        <nav aria-label="Menú principal">
+               <a href="panel.html" class="activo">Panel principal</a>
+                <a href="usuarios.html">Usuarios</a>
+                <a href="cursos.html">Cursos</a>
+                <a href="temas.html">Temas</a>
+                <a href="lecciones.html">Lecciones</a>
+                <a href="preguntas.html">Preguntas</a>
+                <a href="resultados.html">Resultados</a>
+                <a href="estadisticas.html">Estadísticas</a>
+                <a href="mensaje_recibidos.html">Mensaje Recibidos</a>
+                <a href="cuenta.html">Mi cuenta</a>
+        </nav>
+        <div class="consejo">
+          <strong>Cada lección abre una posibilidad</strong>
+          <p>Organiza el contenido y acompaña el aprendizaje.</p>
+        </div>
+        <button class="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+      </aside>
+      <div class="contenedor">
+        <header class="cabecera">
+          <div><small>Administración</small><strong>Preguntas</strong></div>
+          <a href="cuenta.html" class="cuenta"
+            ><span class="insignia">ADMIN</span><span id="nombre_admin"></span
+          ></a>
+        </header>
+        <main>
+          <div class="encabezado">
+            <div>
+              <h1>Preguntas</h1>
+              <p class="ayuda">Gestiona preguntas de Four Ways Learn.</p>
+            </div>
+            <button id="nuevo" class="boton" onclick="nuevaPregunta()" disabled>
+              Crear pregunta
+            </button>
+          </div>
+          <section id="lista" class="tarjeta">
+            <div class="filtros">
+              <input
+                id="buscar"
+                type="search"
+                placeholder="Buscar preguntas…"
+                aria-label="Buscar preguntas"
+                oninput="filtrarPreguntas()"
+              /><select
+                id="filtro_estado"
+                aria-label="Filtrar por estado"
+                onchange="filtrarPreguntas()"
+              >
+                <option value="todos">Todos</option>
+                <option value="1">Activos</option>
+                <option value="0">Inactivos</option>
+              </select>
+            </div>
+            <div class="tabla">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Pregunta</th>
+                    <th>Detalle</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="tabla_registros"></tbody>
+              </table>
+            </div>
+            <div id="contador" class="contador">Cargando datos…</div>
+          </section>
+          <section id="editor" hidden>
+            <h2 id="titulo_editor">Crear pregunta</h2>
+            <form
+              id="formulario"
+              onsubmit="guardarPregunta(event)"
+              oninput="hayCambios = true"
+              onchange="hayCambios = true"
+            >
+              <input id="id_registro" type="hidden" value="0" />
+              <div class="columnas">
+                <div class="tarjeta">
+                  <div class="tarjeta-titulo">
+                    <h3>Información del registro</h3>
+                  </div>
+                  <div class="tarjeta-cuerpo">
+                    <label for="id_leccion"
+                      >Lección<select id="id_leccion" required>
+                        <option value="">Seleccionar</option>
+                      </select></label
+                    ><label for="enunciado"
+                      >Enunciado<textarea
+                        id="enunciado"
+                        maxlength="4000"
+                        class=""
+                        required
+                      ></textarea></label
+                    ><label for="orden"
+                      >Orden<input
+                        id="orden"
+                        type="number"
+                        min="1"
+                        max="10000"
+                        required
+                        value="1"
+                    /></label>
+                    <h3>Alternativas</h3>
+                    <p class="ayuda">Marca una sola respuesta correcta.</p>
+                    <label for="cantidad"
+                      >Cantidad de alternativas<select
+                        id="cantidad"
+                        onchange="mostrarAlternativas()"
+                      >
+                        <option>2</option>
+                        <option>3</option>
+                        <option selected>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                      </select></label
+                    >
+                    <div id="fila_alternativa_0" class="alternativa">
+                      <input
+                        type="radio"
+                        name="correcta"
+                        value="0"
+                        aria-label="Alternativa 1 correcta"
+                        checked
+                      /><label for="alternativa_0"
+                        >Alternativa 1<input
+                          id="alternativa_0"
+                          maxlength="500"
+                          required
+                      /></label>
+                    </div>
+                    <div id="fila_alternativa_1" class="alternativa">
+                      <input
+                        type="radio"
+                        name="correcta"
+                        value="1"
+                        aria-label="Alternativa 2 correcta"
+                      /><label for="alternativa_1"
+                        >Alternativa 2<input
+                          id="alternativa_1"
+                          maxlength="500"
+                          required
+                      /></label>
+                    </div>
+                    <div id="fila_alternativa_2" class="alternativa">
+                      <input
+                        type="radio"
+                        name="correcta"
+                        value="2"
+                        aria-label="Alternativa 3 correcta"
+                      /><label for="alternativa_2"
+                        >Alternativa 3<input
+                          id="alternativa_2"
+                          maxlength="500"
+                          required
+                      /></label>
+                    </div>
+                    <div id="fila_alternativa_3" class="alternativa">
+                      <input
+                        type="radio"
+                        name="correcta"
+                        value="3"
+                        aria-label="Alternativa 4 correcta"
+                      /><label for="alternativa_3"
+                        >Alternativa 4<input
+                          id="alternativa_3"
+                          maxlength="500"
+                          required
+                      /></label>
+                    </div>
+                    <div id="fila_alternativa_4" class="alternativa" hidden>
+                      <input
+                        type="radio"
+                        name="correcta"
+                        value="4"
+                        aria-label="Alternativa 5 correcta"
+                      /><label for="alternativa_4"
+                        >Alternativa 5<input id="alternativa_4" maxlength="500"
+                      /></label>
+                    </div>
+                    <div id="fila_alternativa_5" class="alternativa" hidden>
+                      <input
+                        type="radio"
+                        name="correcta"
+                        value="5"
+                        aria-label="Alternativa 6 correcta"
+                      /><label for="alternativa_5"
+                        >Alternativa 6<input id="alternativa_5" maxlength="500"
+                      /></label>
+                    </div>
+                  </div>
+                </div>
+                <aside>
+                  <section class="tarjeta">
+                    <div class="tarjeta-titulo"><h3>Publicación</h3></div>
+                    <div class="tarjeta-cuerpo">
+                      <label class="casilla"
+                        ><input id="estado" type="checkbox" checked />Registro
+                        activo</label
+                      >
+                      <p class="ayuda">
+                        Desactiva el registro para conservar su historial.
+                      </p>
+                    </div>
+                  </section>
+                </aside>
+              </div>
+              <div class="acciones">
+                <button
+                  id="desactivar"
+                  type="button"
+                  class="boton-peligro"
+                  onclick="desactivarPregunta()"
+                  hidden
+                >
+                  Desactivar registro</button
+                >
+                <button 
+                  id="eliminar"
+                  type="button"
+                  class="boton-peligro"
+                  onclick="eliminarPregunta()"
+                  hidden
+                  >
+                  Eliminar definitivamente
+                </button>
+                <button
+                  id="cancelar"
+                  type="button"
+                  class="boton-secundario"
+                  onclick="cancelarEdicion()"
+                >
+                  Cancelar</button
+                ><button id="guardar" class="boton" type="submit">
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </section>
+        </main>
+        <footer>Four Ways Learn · Panel del administrador</footer>
+      </div>
+    </div>
+  </body>
+</html>

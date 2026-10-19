@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Usuarios · Four Ways Learn</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <script defer src="js/config.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/comun.js"></script>
+    <script defer src="js/usuarios.js"></script>
+  </head>
+  <body>
+    <p id="mensaje" class="mensaje" role="alert" hidden></p>
+    <button
+      id="reintentar"
+      class="boton-secundario reintentar"
+      onclick="window.location.reload()"
+      hidden
+    >
+      Volver a intentar
+    </button>
+    <div id="aplicacion" hidden>
+      <aside class="menu">
+        <a href="panel.html" class="marca"
+          ><span class="logo">&lt;/&gt;</span
+          ><span>Four Ways<br />Learn</span></a
+        >
+        <small>ADMINISTRACIÓN</small>
+        <nav aria-label="Menú principal">
+            <a href="panel.html" class="activo">Panel principal</a>
+                <a href="usuarios.html">Usuarios</a>
+                <a href="cursos.html">Cursos</a>
+                <a href="temas.html">Temas</a>
+                <a href="lecciones.html">Lecciones</a>
+                <a href="preguntas.html">Preguntas</a>
+                <a href="resultados.html">Resultados</a>
+                <a href="estadisticas.html">Estadísticas</a>
+                <a href="mensaje_recibidos.html">Mensaje Recibidos</a>
+                <a href="cuenta.html">Mi cuenta</a>
+        </nav>
+        <div class="consejo">
+          <strong>Cada lección abre una posibilidad</strong>
+          <p>Organiza el contenido y acompaña el aprendizaje.</p>
+        </div>
+        <button class="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+      </aside>
+      <div class="contenedor">
+        <header class="cabecera">
+          <div><small>Administración</small><strong>Usuarios</strong></div>
+          <a href="cuenta.html" class="cuenta"
+            ><span class="insignia">ADMIN</span><span id="nombre_admin"></span
+          ></a>
+        </header>
+        <main>
+          <div class="encabezado">
+            <div>
+              <h1>Usuarios</h1>
+              <p class="ayuda">Gestiona usuarios de Four Ways Learn.</p>
+            </div>
+            <button id="nuevo" class="boton" onclick="nuevoUsuario()" disabled>
+              Crear usuario
+            </button>
+          </div>
+          <section id="lista" class="tarjeta">
+            <div class="filtros">
+              <input
+                id="buscar"
+                type="search"
+                placeholder="Buscar usuarios…"
+                aria-label="Buscar usuarios"
+                oninput="filtrarUsuarios()"
+              /><select
+                id="filtro_estado"
+                aria-label="Filtrar por estado"
+                onchange="filtrarUsuarios()"
+              >
+                <option value="todos">Todos</option>
+                <option value="1">Activos</option>
+                <option value="0">Inactivos</option>
+              </select>
+            </div>
+            <div class="tabla">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Usuario</th>
+                    <th>Detalle</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="tabla_registros"></tbody>
+              </table>
+            </div>
+            <div id="contador" class="contador">Cargando datos…</div>
+          </section>
+          <section id="editor" hidden>
+            <h2 id="titulo_editor">Crear usuario</h2>
+            <form
+              id="formulario"
+              onsubmit="guardarUsuario(event)"
+              oninput="hayCambios = true"
+              onchange="hayCambios = true"
+            >
+              <input id="id_registro" type="hidden" value="0" />
+              <div class="columnas">
+                <div class="tarjeta">
+                  <div class="tarjeta-titulo">
+                    <h3>Información del registro</h3>
+                  </div>
+                  <div class="tarjeta-cuerpo">
+                    <div class="dos-campos">
+                      <label for="nombre"
+                        >Nombre<input
+                          id="nombre"
+                          type="text"
+                          maxlength="100"
+                          required /></label
+                      ><label for="apellido"
+                        >Apellido<input
+                          id="apellido"
+                          type="text"
+                          maxlength="100"
+                          required
+                      /></label>
+                    </div>
+                    <label for="usuario"
+                      >Usuario<input
+                        id="usuario"
+                        type="text"
+                        maxlength="50"
+                        required /></label
+                    ><label for="password"
+                      >Contraseña<input
+                        id="password"
+                        type="password"
+                        autocomplete="new-password"
+                        maxlength="72"
+                        required
+                    /></label>
+                    <p class="ayuda">
+                      Al editar, deja la contraseña vacía para conservarla. Una
+                      contraseña nueva debe tener entre 8 y 72 bytes.
+                    </p>
+                    <label for="id_rol"
+                      >Rol<select id="id_rol">
+                        <option value="2">Alumno</option>
+                        <option value="1">Administrador</option>
+                      </select></label
+                    >
+                  </div>
+                </div>
+                <aside>
+                  <section class="tarjeta">
+                    <div class="tarjeta-titulo"><h3>Publicación</h3></div>
+                    <div class="tarjeta-cuerpo">
+                      <label class="casilla"
+                        ><input id="estado" type="checkbox" checked />Registro
+                        activo</label
+                      >
+                      <p class="ayuda">
+                        Desactiva el registro para conservar su historial.
+                      </p>
+                    </div>
+                  </section>
+                </aside>
+              </div>
+              <div class="acciones">
+                <button
+                  id="desactivar"
+                  type="button"
+                  class="boton-peligro"
+                  onclick="desactivarUsuario()"
+                  hidden
+                >
+                  Desactivar registro</button
+                >
+                <button 
+                  id="eliminar"
+                  type="button"
+                  class="boton-peligro"
+                  onclick="eliminarUsuario()"
+                  hidden
+                  >
+                  Eliminar definitivamente
+                </button>
+                <button
+                  id="cancelar"
+                  type="button"
+                  class="boton-secundario"
+                  onclick="cancelarEdicion()"
+                >
+                  Cancelar</button
+                ><button id="guardar" class="boton" type="submit">
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </section>
+        </main>
+        <footer>Four Ways Learn · Panel del administrador</footer>
+      </div>
+    </div>
+  </body>
+</html>

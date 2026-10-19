@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi cuenta · Four Ways Learn</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <script defer src="js/config.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/comun.js"></script>
+    <script defer src="js/cuenta.js"></script>
+</head>
+<body>
+    <p id="mensaje" class="mensaje" role="alert" hidden></p>
+    <button id="reintentar" class="boton-secundario reintentar" onclick="window.location.reload()" hidden>Volver a intentar</button>
+    <div id="aplicacion" hidden>
+        <aside class="menu">
+            <a href="panel.html" class="marca"><span class="logo">&lt;/&gt;</span><span>Four Ways<br>Learn</span></a>
+            <small>ADMINISTRACIÓN</small>
+            <nav aria-label="Menú principal">
+                <a href="panel.html" class="activo">Panel principal</a>
+                <a href="usuarios.html">Usuarios</a>
+                <a href="cursos.html">Cursos</a>
+                <a href="temas.html">Temas</a>
+                <a href="lecciones.html">Lecciones</a>
+                <a href="preguntas.html">Preguntas</a>
+                <a href="resultados.html">Resultados</a>
+                <a href="estadisticas.html">Estadísticas</a>
+                <a href="mensaje_recibidos.html">Mensaje Recibidos</a>
+                <a href="cuenta.html">Mi cuenta</a>
+            </nav>
+            <div class="consejo"><strong>Cada lección abre una posibilidad</strong><p>Organiza el contenido y acompaña el aprendizaje.</p></div>
+            <button class="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+        </aside>
+        <div class="contenedor">
+            <header class="cabecera">
+                <div><small>Administración</small><strong>Mi cuenta</strong></div>
+                <a href="cuenta.html" class="cuenta"><span class="insignia">ADMIN</span><span id="nombre_admin"></span></a>
+            </header>
+            <main>
+                <div class="encabezado"><div><h1>Mi cuenta</h1><p class="ayuda">Datos de tu sesión.</p></div></div><section class="tarjeta" style="max-width:650px"><div class="tarjeta-cuerpo"><h2 id="nombre_completo"></h2><span class="insignia">ADMINISTRADOR</span><dl class="datos-cuenta"><dt>Usuario</dt><dd id="usuario_cuenta"></dd><dt>Nombre</dt><dd id="nombre_cuenta"></dd><dt>Apellido</dt><dd id="apellido_cuenta"></dd><dt>API</dt><dd id="api_cuenta"></dd></dl><p class="ayuda">Actualiza tus datos desde Usuarios. Si cambias tu contraseña, deberás iniciar sesión nuevamente.</p><button class="boton-peligro" onclick="cerrarSesion()">Cerrar sesión</button></div></section>
+            </main>
+            <footer>Four Ways Learn · Panel del administrador</footer>
+        </div>
+    </div>
+</body>
+</html>

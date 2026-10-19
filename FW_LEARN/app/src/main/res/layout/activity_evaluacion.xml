@@ -6,49 +6,49 @@
     android:orientation="vertical">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/questionProgress"
+        android:id="@+id/progresoPregunta"
         android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="@dimen/espacio_12"
+        android:layout_marginTop="@dimen/espacio_8"
         android:max="10000"
-        app:indicatorColor="@color/fw_blue"
-        app:trackColor="@color/fw_track"
+        app:indicatorColor="@color/fw_azul"
+        app:trackColor="@color/fw_pista"
         app:trackCornerRadius="4dp"
         app:trackThickness="7dp" />
 
     <TextView
-        android:id="@+id/questionPosition"
+        android:id="@+id/posicionPregunta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="@dimen/espacio_10"
+        android:layout_marginBottom="@dimen/espacio_24"
         android:gravity="center"
-        android:textColor="@color/fw_muted"
-        android:textSize="13sp" />
+        android:textColor="@color/fw_apagado"
+        android:textSize="@dimen/texto_13" />
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.FW.Card"
+        style="@style/Widget.FW.Tarjeta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/fw_card">
+        app:cardBackgroundColor="@color/fw_tarjeta">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:padding="@dimen/espacio_18">
 
             <TextView
-                android:id="@+id/questionTitle"
+                android:id="@+id/tituloPregunta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="22dp"
-                android:textColor="@color/fw_ink"
-                android:textSize="23sp"
+                android:layout_marginBottom="@dimen/espacio_22"
+                android:textColor="@color/fw_tinta"
+                android:textSize="@dimen/texto_23"
                 android:textStyle="bold" />
 
             <RadioGroup
-                android:id="@+id/answerGroup"
+                android:id="@+id/grupoRespuestas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
@@ -56,20 +56,20 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
-        android:id="@+id/answersCaption"
+        android:id="@+id/leyendaRespuestas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/espacio_16"
         android:gravity="center"
-        android:textColor="@color/fw_muted"
-        android:textSize="12sp" />
+        android:textColor="@color/fw_apagado"
+        android:textSize="@dimen/texto_12" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/espacio_8"
         android:gravity="center"
-        android:text="@string/evaluation_save_hint"
-        android:textColor="@color/fw_muted"
-        android:textSize="13sp" />
+        android:text="@string/sugerencia_guardar_evaluacion"
+        android:textColor="@color/fw_apagado"
+        android:textSize="@dimen/texto_13" />
 </LinearLayout>

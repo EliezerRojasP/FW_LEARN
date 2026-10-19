@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "15959358447",
+    "project_id": "fourwayslearn",
+    "storage_bucket": "fourwayslearn.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15959358447:android:d0d42040750efaf52d541a",
+        "android_client_info": {
+          "package_name": "com.example.four_ways_learn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkevhSaM7erilfbem6wtn0PtU1q1qzxoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

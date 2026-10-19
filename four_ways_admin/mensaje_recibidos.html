@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mensajes · Four Ways Learn</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <style>
+      /* Estilos propios de la pantalla de mensajes (puedes moverlos a estilos.css). */
+      .lista-mensajes {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 18px;
+        padding: 0 23px 23px;
+      }
+      .vineta {
+        border: 1px solid var(--borde);
+        border-radius: 14px;
+        background: white;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .vineta.sin-leer {
+        border-left: 4px solid var(--azul);
+        background: #fbfdff;
+      }
+      .vineta-cabecera {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .avatar {
+        width: 42px;
+        height: 42px;
+        flex: none;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #e8f0ff;
+        color: var(--azul);
+        font-weight: bold;
+      }
+      .vineta-usuario {
+        flex: 1;
+        min-width: 0;
+      }
+      .vineta-usuario strong,
+      .vineta-usuario small {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .vineta-usuario small {
+        color: var(--gris);
+        font-size: 12px;
+      }
+      .vineta-estados {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .pendiente {
+        background: #fff4dc;
+        color: #9a6200;
+      }
+      .nuevo {
+        background: #e8f0ff;
+        color: var(--azul);
+      }
+      .vineta-pregunta {
+        margin: 0;
+        padding: 13px 15px;
+        background: var(--fondo);
+        border-radius: 10px;
+        font-size: 14px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .vineta-respuesta {
+        margin: 0;
+        padding: 13px 15px;
+        background: #e3f8ef;
+        color: var(--verde);
+        border-radius: 10px;
+        font-size: 13px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .vineta-pie {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: auto;
+      }
+      .vineta-pie small {
+        color: var(--gris);
+        font-size: 12px;
+      }
+      .vacio {
+        padding: 40px 23px;
+        text-align: center;
+        color: var(--gris);
+      }
+      .original {
+        padding: 15px 17px;
+        background: var(--fondo);
+        border-radius: 10px;
+        margin-bottom: 20px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+    </style>
+    <script defer src="js/config.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/comun.js"></script>
+    <script defer src="js/mensaje_recibido.js"></script>
+  </head>
+  <body>
+    <p id="mensaje" class="mensaje" role="alert" hidden></p>
+    <button
+      id="reintentar"
+      class="boton-secundario reintentar"
+      onclick="window.location.reload()"
+      hidden
+    >
+      Volver a intentar
+    </button>
+    <div id="aplicacion" hidden>
+      <aside class="menu">
+        <a href="panel.html" class="marca"
+          ><span class="logo">&lt;/&gt;</span
+          ><span>Four Ways<br />Learn</span></a
+        >
+        <small>ADMINISTRACIÓN</small>
+        <nav aria-label="Menú principal">
+             <a href="panel.html" class="activo">Panel principal</a>
+                <a href="usuarios.html">Usuarios</a>
+                <a href="cursos.html">Cursos</a>
+                <a href="temas.html">Temas</a>
+                <a href="lecciones.html">Lecciones</a>
+                <a href="preguntas.html">Preguntas</a>
+                <a href="resultados.html">Resultados</a>
+                <a href="estadisticas.html">Estadísticas</a>
+                <a href="mensaje_recibidos.html">Mensaje Recibidos</a>
+                <a href="cuenta.html">Mi cuenta</a>
+        </nav>
+        <div class="consejo">
+          <strong>Cada lección abre una posibilidad</strong>
+          <p>Organiza el contenido y acompaña el aprendizaje.</p>
+        </div>
+        <button class="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+      </aside>
+      <div class="contenedor">
+        <header class="cabecera">
+          <div><small>Administración</small><strong>Mensajes</strong></div>
+          <a href="cuenta.html" class="cuenta"
+            ><span class="insignia">ADMIN</span><span id="nombre_admin"></span
+          ></a>
+        </header>
+        <main>
+          <div class="encabezado">
+            <div>
+              <h1>Mensajes</h1>
+              <p class="ayuda">
+                Consultas que los alumnos envían desde la aplicación Android.
+              </p>
+            </div>
+            <button
+              id="actualizar"
+              class="boton-secundario"
+              onclick="cargarMensajes()"
+            >
+              Actualizar
+            </button>
+          </div>
+
+          <!-- Resumen -->
+          <section class="resumen" aria-label="Resumen de mensajes">
+            <div class="tarjeta">
+              <div class="tarjeta-cuerpo">
+                <span>Total</span><span id="total_mensajes" class="numero">0</span>
+              </div>
+            </div>
+            <div class="tarjeta">
+              <div class="tarjeta-cuerpo">
+                <span>Sin leer</span><span id="total_sin_leer" class="numero">0</span>
+              </div>
+            </div>
+            <div class="tarjeta">
+              <div class="tarjeta-cuerpo">
+                <span>Sin contestar</span
+                ><span id="total_sin_contestar" class="numero">0</span>
+              </div>
+            </div>
+            <div class="tarjeta">
+              <div class="tarjeta-cuerpo">
+                <span>Contestados</span
+                ><span id="total_contestados" class="numero">0</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Lista de mensajes -->
+          <section id="lista" class="tarjeta" style="margin-top: 23px">
+            <div class="filtros">
+              <input
+                id="buscar"
+                type="search"
+                placeholder="Buscar por alumno o texto…"
+                aria-label="Buscar mensajes"
+                oninput="filtrarMensajes()"
+              /><select
+                id="filtro_respuesta"
+                aria-label="Filtrar por respuesta"
+                onchange="filtrarMensajes()"
+              >
+                <option value="todos">Todos</option>
+                <option value="0">Sin contestar</option>
+                <option value="1">Contestados</option>
+              </select>
+              <select
+                id="filtro_lectura"
+                aria-label="Filtrar por lectura"
+                onchange="filtrarMensajes()"
+              >
+                <option value="todos">Leídos y sin leer</option>
+                <option value="0">Sin leer</option>
+                <option value="1">Leídos</option>
+              </select>
+            </div>
+
+            <div id="lista_mensajes" class="lista-mensajes"></div>
+            <div id="vacio" class="vacio" hidden>
+              No hay mensajes que coincidan con los filtros.
+            </div>
+            <div id="contador" class="contador">Cargando datos…</div>
+          </section>
+
+          <!-- Responder -->
+          <section id="editor" hidden>
+            <h2>Responder mensaje</h2>
+            <form id="formulario" onsubmit="enviarRespuesta(event)">
+              <input id="id_mensaje" type="hidden" value="0" />
+              <div class="columnas">
+                <div class="tarjeta">
+                  <div class="tarjeta-titulo">
+                    <h3>Respuesta al alumno</h3>
+                  </div>
+                  <div class="tarjeta-cuerpo">
+                    <dl class="datos-cuenta" style="margin-bottom: 20px">
+                      <dt>Alumno</dt>
+                      <dd id="resp_nombre"></dd>
+                      <dt>Correo</dt>
+                      <dd id="resp_correo"></dd>
+                      <dt>Fecha</dt>
+                      <dd id="resp_fecha"></dd>
+                    </dl>
+                    <p class="ayuda">Pregunta del alumno</p>
+                    <div id="resp_pregunta" class="original"></div>
+                    <label for="respuesta"
+                      >Tu respuesta<textarea
+                        id="respuesta"
+                        maxlength="4000"
+                        required
+                      ></textarea>
+                    </label>
+                  </div>
+                </div>
+                <aside>
+                  <section class="tarjeta">
+                    <div class="tarjeta-titulo"><h3>Estado</h3></div>
+                    <div class="tarjeta-cuerpo">
+                      <div class="vineta-estados">
+                        <span id="resp_estado_lectura" class="estado"></span>
+                        <span id="resp_estado_respuesta" class="estado"></span>
+                      </div>
+                      <p class="ayuda" style="margin-top: 14px">
+                        Al enviar, el mensaje se marcará como contestado y el
+                        alumno recibirá la respuesta en la aplicación Android.
+                      </p>
+                    </div>
+                  </section>
+                </aside>
+              </div>
+              <div class="acciones">
+                <button
+                  id="cancelar"
+                  type="button"
+                  class="boton-secundario"
+                  onclick="cancelarRespuesta()"
+                >
+                  Cancelar</button
+                ><button id="guardar" class="boton" type="submit">
+                  Enviar respuesta
+                </button>
+              </div>
+            </form>
+          </section>
+        </main>
+        <footer>Four Ways Learn · Panel del administrador</footer>
+      </div>
+    </div>
+
+    <!-- Plantilla de cada viñeta: mensajes.js la clona por cada mensaje -->
+    <template id="plantilla_mensaje">
+      <article class="vineta">
+        <div class="vineta-cabecera">
+          <span class="avatar" data-campo="inicial"></span>
+          <div class="vineta-usuario">
+            <strong data-campo="nombre"></strong>
+            <small data-campo="correo"></small>
+          </div>
+        </div>
+        <div class="vineta-estados">
+          <span class="estado" data-campo="estado_lectura"></span>
+          <span class="estado" data-campo="estado_respuesta"></span>
+        </div>
+        <p class="vineta-pregunta" data-campo="pregunta"></p>
+        <p class="vineta-respuesta" data-campo="respuesta" hidden></p>
+        <div class="vineta-pie">
+          <small data-campo="fecha"></small>
+          <button type="button" class="boton-pequeno" data-accion="responder">
+            Responder
+          </button>
+        </div>
+      </article>
+    </template>
+  </body>
+</html>

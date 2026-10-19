@@ -1,28 +1,30 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <style name="Base.Theme.FOUR_WAYS_LEARN" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/fw_blue</item>
-        <item name="colorOnPrimary">@color/fw_on_primary</item>
-        <item name="colorPrimaryContainer">@color/fw_blue_soft</item>
-        <item name="colorOnPrimaryContainer">@color/fw_ink</item>
-        <item name="colorSecondary">@color/fw_green</item>
-        <item name="colorSecondaryContainer">@color/fw_mint</item>
-        <item name="colorOnSecondaryContainer">@color/fw_on_mint</item>
-        <item name="colorSurface">@color/fw_card</item>
-        <item name="colorOnSurface">@color/fw_ink</item>
-        <item name="colorOnSurfaceVariant">@color/fw_muted</item>
-        <item name="colorSurfaceVariant">@color/fw_track</item>
-        <item name="colorOutline">@color/fw_border</item>
-        <item name="colorError">@color/fw_danger</item>
-        <item name="android:windowBackground">@color/fw_background</item>
+    <style name="Base.Tema.FOUR_WAYS_LEARN" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/fw_azul</item>
+        <item name="colorOnPrimary">@color/fw_sobre_primario</item>
+        <item name="colorPrimaryContainer">@color/fw_azul_suave</item>
+        <item name="colorOnPrimaryContainer">@color/fw_tinta</item>
+        <item name="colorSecondary">@color/fw_verde</item>
+        <item name="colorSecondaryContainer">@color/fw_menta</item>
+        <item name="colorOnSecondaryContainer">@color/fw_sobre_menta</item>
+        <item name="colorSurface">@color/fw_tarjeta</item>
+        <item name="colorOnSurface">@color/fw_tinta</item>
+        <item name="colorOnSurfaceVariant">@color/fw_apagado</item>
+        <item name="colorSurfaceVariant">@color/fw_pista</item>
+        <item name="colorOutline">@color/fw_borde</item>
+        <item name="colorError">@color/fw_peligro</item>
+        <item name="android:windowBackground">@color/fw_fondo</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="fontFamily">sans-serif</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="materialButtonStyle">@style/Widget.FW.Button</item>
-        <item name="textInputStyle">@style/Widget.FW.Input</item>
+        <item name="materialButtonStyle">@style/Widget.FW.Boton</item>
+        <item name="textInputStyle">@style/Widget.FW.Entrada</item>
     </style>
-    <style name="Theme.FOUR_WAYS_LEARN" parent="Base.Theme.FOUR_WAYS_LEARN" />
-    <style name="Widget.FW.Button" parent="Widget.Material3.Button">
+    <style name="Tema.FOUR_WAYS_LEARN" parent="Base.Tema.FOUR_WAYS_LEARN">
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+    <style name="Widget.FW.Boton" parent="Widget.Material3.Button">
         <item name="cornerRadius">14dp</item>
         <item name="android:minHeight">54dp</item>
         <item name="android:textAllCaps">false</item>
@@ -31,29 +33,22 @@
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
     </style>
-    <style name="Widget.FW.Input" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+    <style name="Widget.FW.Entrada" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxCornerRadiusTopStart">12dp</item>
         <item name="boxCornerRadiusTopEnd">12dp</item>
         <item name="boxCornerRadiusBottomStart">12dp</item>
         <item name="boxCornerRadiusBottomEnd">12dp</item>
-        <item name="boxStrokeColor">@color/fw_muted</item>
-        <item name="hintTextColor">@color/fw_muted</item>
+        <item name="boxStrokeColor">@color/fw_apagado</item>
+        <item name="hintTextColor">@color/fw_apagado</item>
     </style>
-    <style name="Widget.FW.Card" parent="Widget.Material3.CardView.Elevated">
+    <style name="Widget.FW.Tarjeta" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">20dp</item>
         <item name="cardElevation">0dp</item>
-        <item name="cardBackgroundColor">@color/fw_card</item>
-        <item name="strokeColor">@color/fw_border</item>
+        <item name="cardBackgroundColor">@color/fw_tarjeta</item>
+        <item name="strokeColor">@color/fw_borde</item>
         <item name="strokeWidth">1dp</item>
     </style>
-    <style name="Text.FW.Title" parent="TextAppearance.Material3.HeadlineSmall">
-        <item name="android:textColor">@color/fw_ink</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    <style name="Text.FW.Body" parent="TextAppearance.Material3.BodyLarge">
-        <item name="android:textColor">@color/fw_muted</item>
-    </style>
-    <style name="Widget.FW.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/fw_blue_soft</item>
+    <style name="Widget.FW.IndicadorNavegacion" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/fw_azul_suave</item>
     </style>
 </resources>

@@ -5,19 +5,30 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.FW.Card"
+    <TextView
+        android:id="@+id/tituloProgreso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
-        app:cardBackgroundColor="@color/fw_navy"
+        android:layout_marginBottom="@dimen/espacio_14"
+        android:text="@string/mi_progreso"
+        android:textColor="@color/fw_tinta"
+        android:textSize="@dimen/texto_28"
+        android:textStyle="bold" />
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.FW.Tarjeta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/espacio_18"
+        app:cardBackgroundColor="@color/fw_marino"
         app:strokeWidth="0dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="22dp">
+            android:padding="@dimen/espacio_22">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,50 +37,50 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="@dimen/espacio_28"
+                    android:layout_height="@dimen/espacio_28"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_fw_book"
-                    app:tint="@color/fw_on_navy" />
+                    android:src="@drawable/icono_libro"
+                    app:tint="@color/fw_sobre_marino" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="@dimen/espacio_12"
                     android:layout_weight="1"
-                    android:text="@string/overall_progress"
-                    android:textColor="@color/fw_on_navy"
-                    android:textSize="16sp"
+                    android:text="@string/progreso_general"
+                    android:textColor="@color/fw_sobre_marino"
+                    android:textSize="@dimen/texto_16"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/overallPercent"
+                android:id="@+id/porcentajeGeneral"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:textColor="@color/fw_on_navy"
-                android:textSize="44sp"
+                android:layout_marginTop="@dimen/espacio_14"
+                android:textColor="@color/fw_sobre_marino"
+                android:textSize="@dimen/texto_44"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/overallCount"
+                android:id="@+id/conteoGeneral"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColor="@color/fw_on_navy"
-                android:textSize="15sp" />
+                android:layout_marginTop="@dimen/espacio_8"
+                android:textColor="@color/fw_sobre_marino"
+                android:textSize="@dimen/texto_15" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
-        android:id="@+id/courseContainer"
+        android:id="@+id/contenedorCurso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
     <LinearLayout
-        android:id="@+id/latestContainer"
+        android:id="@+id/contenedorReciente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
@@ -77,24 +88,24 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/progress_by_topic"
-        android:textColor="@color/fw_ink"
-        android:textSize="21sp"
+        android:layout_marginTop="@dimen/espacio_10"
+        android:layout_marginBottom="@dimen/espacio_12"
+        android:text="@string/progreso_por_tema"
+        android:textColor="@color/fw_tinta"
+        android:textSize="@dimen/texto_21"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/topicContainer"
+        android:id="@+id/contenedorTemas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/historyButton"
+        android:id="@+id/botonHistorial"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/action_view_history" />
+        android:layout_marginTop="@dimen/espacio_8"
+        android:text="@string/accion_ver_historial" />
 </LinearLayout>

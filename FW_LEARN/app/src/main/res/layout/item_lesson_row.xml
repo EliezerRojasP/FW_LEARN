@@ -12,42 +12,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:minHeight="64dp"
+        android:minHeight="@dimen/altura_64"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingTop="@dimen/espacio_10"
+        android:paddingBottom="@dimen/espacio_10">
 
         <ImageView
-            android:id="@+id/lessonStateIcon"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="@drawable/bg_check"
+            android:id="@+id/iconoEstadoLeccion"
+            android:layout_width="@dimen/espacio_28"
+            android:layout_height="@dimen/espacio_28"
+            android:background="@drawable/fondo_marca"
             android:importantForAccessibility="no"
-            android:padding="5dp"
-            android:src="@drawable/ic_fw_check"
-            app:tint="@color/fw_on_navy" />
+            android:padding="@dimen/espacio_5"
+            android:src="@drawable/icono_comprobado"
+            app:tint="@color/fw_sobre_marino" />
 
         <TextView
-            android:id="@+id/lessonTitle"
+            android:id="@+id/tituloLeccion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="@dimen/espacio_12"
+            android:layout_marginEnd="@dimen/espacio_8"
             android:layout_weight="1"
-            android:textColor="@color/fw_ink"
-            android:textSize="15sp" />
+            android:textColor="@color/fw_tinta"
+            android:textSize="@dimen/texto_15" />
 
         <TextView
-            android:id="@+id/lessonStatus"
+            android:id="@+id/estadoLeccion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="98dp"
-            android:textColor="@color/fw_green"
-            android:textSize="12sp" />
+            android:textColor="@color/fw_verde"
+            android:textSize="@dimen/texto_12" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/fw_border" />
+        android:background="@color/fw_borde" />
 </LinearLayout>

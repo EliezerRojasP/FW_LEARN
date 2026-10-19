@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/espacio_20"
+    android:paddingTop="@dimen/espacio_12"
+    android:paddingEnd="@dimen/espacio_20">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/campoBusqueda"
+        style="@style/Widget.FW.Entrada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/buscar_registros">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/entradaBusqueda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/fw_tinta"
+            android:textSize="@dimen/texto_16" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/filaFiltros"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacio_12"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/filtroTodos"
+            style="@style/Widget.FW.Boton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/espacio_6"
+            android:layout_weight="1"
+            android:minWidth="@dimen/espacio_0"
+            android:paddingStart="@dimen/espacio_4"
+            android:paddingEnd="@dimen/espacio_4"
+            android:text="@string/filtro_todos"
+            android:textColor="@color/fw_azul"
+            android:textSize="@dimen/texto_12"
+            app:backgroundTint="@color/fw_azul_suave" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/filtroActivos"
+            style="@style/Widget.FW.Boton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/espacio_6"
+            android:layout_weight="1"
+            android:minWidth="@dimen/espacio_0"
+            android:paddingStart="@dimen/espacio_4"
+            android:paddingEnd="@dimen/espacio_4"
+            android:text="@string/filtro_activos"
+            android:textColor="@color/fw_azul"
+            android:textSize="@dimen/texto_12"
+            app:backgroundTint="@color/fw_azul_suave" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/filtroInactivos"
+            style="@style/Widget.FW.Boton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minWidth="@dimen/espacio_0"
+            android:paddingStart="@dimen/espacio_4"
+            android:paddingEnd="@dimen/espacio_4"
+            android:text="@string/filtro_inactivos"
+            android:textColor="@color/fw_azul"
+            android:textSize="@dimen/texto_12"
+            app:backgroundTint="@color/fw_azul_suave" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textoConteo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/espacio_8"
+        android:textColor="@color/fw_apagado"
+        android:textSize="@dimen/texto_12" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listaRegistros"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/espacio_4"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/espacio_12"
+        android:scrollbars="none" />
+
+    <TextView
+        android:id="@+id/textoVacio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/espacio_24"
+        android:text="@string/registros_vacios"
+        android:textColor="@color/fw_apagado"
+        android:textSize="@dimen/texto_15"
+        android:visibility="gone" />
+</LinearLayout>

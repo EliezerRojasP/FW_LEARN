@@ -5,27 +5,27 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/greeting"
+        android:id="@+id/saludo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_title"
-        android:textColor="@color/fw_ink"
-        android:textSize="28sp"
+        android:text="@string/titulo_bienvenida"
+        android:textColor="@color/fw_tinta"
+        android:textSize="@dimen/texto_28"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/subtitle"
+        android:id="@+id/subtitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="18dp"
-        android:text="@string/courses_title"
-        android:textColor="@color/fw_ink"
-        android:textSize="21sp"
+        android:layout_marginTop="@dimen/espacio_6"
+        android:layout_marginBottom="@dimen/espacio_18"
+        android:text="@string/titulo_cursos"
+        android:textColor="@color/fw_tinta"
+        android:textSize="@dimen/texto_21"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/featuredContainer"
+        android:id="@+id/contenedorDestacado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
@@ -33,34 +33,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/espacio_10"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/espacio_8"
             android:layout_weight="1"
-            android:text="@string/catalog_heading"
-            android:textColor="@color/fw_ink"
-            android:textSize="19sp"
+            android:text="@string/titulo_catalogo"
+            android:textColor="@color/fw_tinta"
+            android:textSize="@dimen/texto_19"
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/allCoursesButton"
+            android:id="@+id/botonTodosCursos"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:minWidth="0dp"
-            android:padding="6dp"
-            android:text="@string/catalog_all"
-            android:textSize="12sp" />
+            android:padding="@dimen/espacio_6"
+            android:text="@string/catalogo_todos"
+            android:textSize="@dimen/texto_12" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/courseList"
+        android:id="@+id/listaCursos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />

@@ -1,81 +1,346 @@
 <?php
-require __DIR__.'/bootstrap.php';$u=admin();$resource=$_GET['recurso'] ?? '';
-$definitions=[
- 'cursos'=>['id_curso',['nombre','descripcion','estado']],
- 'topicos'=>['id_topico',['id_curso','nombre','descripcion','orden','estado']],
- 'lecciones'=>['id_leccion',['id_topico','titulo','contenido','orden','estado']],
- 'preguntas'=>['id_pregunta',['id_leccion','enunciado','orden','estado']],
- 'usuarios'=>['id_usuario',['id_rol','nombre','apellido','usuario','estado']]
-];
-if($resource==='estadisticas'){
- method('GET');respond([
-  'alumnos'=>(int)rows('SELECT COUNT(*) AS n FROM usuarios WHERE id_rol=2 AND estado=1')[0]['n'],
-  'cursos'=>(int)rows('SELECT COUNT(*) AS n FROM cursos WHERE estado=1')[0]['n'],
-  'lecciones'=>(int)rows('SELECT COUNT(*) AS n FROM lecciones WHERE estado=1')[0]['n'],
-  'intentos'=>(int)rows('SELECT COUNT(*) AS n FROM resultados')[0]['n'],
-  'promedio'=>(float)(rows('SELECT AVG(porcentaje) AS n FROM resultados')[0]['n'] ?? 0)
- ]);
+require __DIR__ . '/bootstrap.php';
+
+$administrador = admin();
+$recurso = $_GET['recurso'] ?? '';
+$metodo = $_SERVER['REQUEST_METHOD'];
+
+if ($recurso === 'estadisticas') {
+    method('GET');
+    respond([
+        'alumnos' => (int) rows('SELECT COUNT(*) AS n FROM usuarios WHERE id_rol = 2 AND estado = 1')[0]['n'],
+        'cursos' => (int) rows('SELECT COUNT(*) AS n FROM cursos WHERE estado = 1')[0]['n'],
+        'lecciones' => (int) rows('SELECT COUNT(*) AS n FROM lecciones WHERE estado = 1')[0]['n'],
+        'intentos' => (int) rows('SELECT COUNT(*) AS n FROM resultados')[0]['n'],
+        'promedio' => (float) (rows('SELECT AVG(porcentaje) AS n FROM resultados')[0]['n'] ?? 0)
+    ]);
 }
-if($resource==='resultados'){
- method('GET');respond(rows('SELECT r.*,CONCAT(u.nombre,\' \',u.apellido) AS alumno,l.titulo FROM resultados r JOIN usuarios u ON u.id_usuario=r.id_usuario JOIN lecciones l ON l.id_leccion=r.id_leccion ORDER BY r.fecha_resultado DESC,r.id_resultado DESC LIMIT 200'));
+
+if ($recurso === 'resultados') {
+    method('GET');
+    respond(rows("SELECT r.*, CONCAT(u.nombre, ' ', u.apellido) AS alumno, l.titulo
+        FROM resultados r
+        JOIN usuarios u ON u.id_usuario = r.id_usuario
+        JOIN lecciones l ON l.id_leccion = r.id_leccion
+        ORDER BY r.fecha_resultado DESC, r.id_resultado DESC LIMIT 200"));
 }
-if(!isset($definitions[$resource]))respond(null,'Recurso desconocido.',404);
-[$pk,$fields]=$definitions[$resource];
-$method=$_SERVER['REQUEST_METHOD'];
-if($method==='GET'){
- $select=implode(',',array_merge([$pk],$fields));$data=rows("SELECT $select FROM $resource ORDER BY $pk");
- if($resource==='preguntas')foreach($data as &$p){$p['alternativas']=rows('SELECT id_alternativa,texto,es_correcta FROM alternativas WHERE id_pregunta=? ORDER BY id_alternativa',[(int)$p[$pk]]);}unset($p);
- respond($data);
+
+if (!in_array($recurso, ['cursos', 'topicos', 'lecciones', 'preguntas', 'usuarios'], true)) {
+    respond(null, 'Recurso desconocido.', 404);
 }
-if(!in_array($method,['POST','PUT','DELETE'],true))respond(null,'Método no permitido.',405);
-$d=body();$id=$method==='POST'?0:integer($d,$pk);
-if($method!=='POST' && !rows("SELECT $pk FROM $resource WHERE $pk=?",[$id]))respond(null,'Registro no encontrado.',404);
-if($method==='DELETE'){
- if($resource==='usuarios' && $id===$u['id_usuario'])respond(null,'No puedes desactivar tu propia cuenta.',422);
- query("UPDATE $resource SET estado=0 WHERE $pk=?",[$id]);respond(null,'Registro desactivado. El historial se conserva.');
+
+// Listar los registros.
+if ($metodo === 'GET') {
+    $registros = [];
+
+    switch ($recurso) {
+        case 'cursos':
+            $registros = rows('SELECT id_curso, nombre, descripcion, estado FROM cursos ORDER BY id_curso');
+            break;
+
+        case 'topicos':
+            $registros = rows('SELECT id_topico, id_curso, nombre, descripcion, orden, estado FROM topicos ORDER BY id_topico');
+            break;
+
+        case 'lecciones':
+            $registros = rows('SELECT id_leccion, id_topico, titulo, contenido, orden, estado FROM lecciones ORDER BY id_leccion');
+            break;
+
+        case 'preguntas':
+            $registros = rows('SELECT id_pregunta, id_leccion, enunciado, orden, estado FROM preguntas ORDER BY id_pregunta');
+            foreach ($registros as &$pregunta) {
+                $pregunta['alternativas'] = rows(
+                    'SELECT id_alternativa, texto, es_correcta FROM alternativas WHERE id_pregunta = ? ORDER BY id_alternativa',
+                    [(int) $pregunta['id_pregunta']]
+                );
+            }
+            unset($pregunta);
+            break;
+
+        case 'usuarios':
+            $registros = rows('SELECT id_usuario, id_rol, nombre, apellido, usuario, estado FROM usuarios ORDER BY id_usuario');
+            break;
+    }
+    respond($registros);
 }
-$values=[];
-foreach($fields as $field){
- if($field==='estado')$values[$field]=integer($d,$field,0,1);
- elseif($field==='orden')$values[$field]=integer($d,$field,1,10000);
- elseif(str_starts_with($field,'id_'))$values[$field]=integer($d,$field);
- else {
-  $limits=['nombre'=>$resource==='usuarios'?100:150,'apellido'=>100,'usuario'=>50,'titulo'=>200,'enunciado'=>4000,'descripcion'=>10000,'contenido'=>50000];
-  $values[$field]=txt($d,$field,$limits[$field],in_array($field,['descripcion','contenido'],true));
- }
+
+if (!in_array($metodo, ['POST', 'PUT', 'DELETE'], true)) {
+    respond(null, 'Metodo no permitido.', 405);
 }
-if($resource==='usuarios'){
- if(!in_array($values['id_rol'],[1,2],true))respond(null,'Rol inválido.',422);
- if($id===$u['id_usuario'] && ($values['estado']===0 || $values['id_rol']!==1))respond(null,'No puedes quitarte el acceso de administrador.',422);
- $pass=$d['password'] ?? '';
- if(!is_string($pass))respond(null,'Contraseña inválida.',422);
- if($method==='POST' || $pass!==''){
-  if(strlen($pass)<8 || strlen($pass)>72)respond(null,'La contraseña debe tener entre 8 y 72 bytes.',422);
-  $values['password']=password_hash($pass,PASSWORD_DEFAULT);
- }
+
+$datos = body();
+$id = 0;
+$registro = [];
+$registros = [];
+
+if ($metodo !== 'POST') {
+    switch ($recurso) {
+        case 'cursos':
+            $id = integer($datos, 'id_curso');
+            $registro = rows('SELECT id_curso FROM cursos WHERE id_curso = ?', [$id]);
+            break;
+
+        case 'topicos':
+            $id = integer($datos, 'id_topico');
+            $registro = rows('SELECT id_topico FROM topicos WHERE id_topico = ?', [$id]);
+            break;
+
+        case 'lecciones':
+            $id = integer($datos, 'id_leccion');
+            $registro = rows('SELECT id_leccion FROM lecciones WHERE id_leccion = ?', [$id]);
+            break;
+
+        case 'preguntas':
+            $id = integer($datos, 'id_pregunta');
+            $registro = rows('SELECT id_pregunta FROM preguntas WHERE id_pregunta = ?', [$id]);
+            break;
+
+        case 'usuarios':
+            $id = integer($datos, 'id_usuario');
+            $registro = rows('SELECT id_usuario FROM usuarios WHERE id_usuario = ?', [$id]);
+            break;
+    }
+    if (!$registro) {
+        respond(null, 'Registro no encontrado.', 404);
+    }
 }
-$parent=['topicos'=>['cursos','id_curso'],'lecciones'=>['topicos','id_topico'],'preguntas'=>['lecciones','id_leccion']];
-if(isset($parent[$resource])){
- [$table,$parentKey]=$parent[$resource];if(!rows("SELECT $parentKey FROM $table WHERE $parentKey=?",[$values[$parentKey]]))respond(null,'El registro padre no existe.',422);
+
+// Esta ruta desactiva el registro para conservar su historial.
+if ($metodo === 'DELETE') {
+    if ($recurso === 'usuarios' && $id === $administrador['id_usuario']) {
+        respond(null, 'No puedes desactivar tu propia cuenta.', 422);
+    }
+
+    switch ($recurso) {
+        case 'cursos':
+            query('UPDATE cursos SET estado = 0 WHERE id_curso = ?', [$id]);
+            break;
+
+        case 'topicos':
+            query('UPDATE topicos SET estado = 0 WHERE id_topico = ?', [$id]);
+            break;
+
+        case 'lecciones':
+            query('UPDATE lecciones SET estado = 0 WHERE id_leccion = ?', [$id]);
+            break;
+
+        case 'preguntas':
+            query('UPDATE preguntas SET estado = 0 WHERE id_pregunta = ?', [$id]);
+            break;
+
+        case 'usuarios':
+            query('UPDATE usuarios SET estado = 0 WHERE id_usuario = ?', [$id]);
+            break;
+    }
+    respond(null, 'Registro desactivado. El historial se conserva.');
 }
-$options=[];
-if($resource==='preguntas'){
- $options=$d['alternativas'] ?? [];
- if(!is_array($options) || !array_is_list($options) || count($options)<2 || count($options)>6)respond(null,'La pregunta requiere de 2 a 6 alternativas.',422);
- $correct=0;$normalized=[];
- foreach($options as $a){if(!is_array($a))respond(null,'Alternativa inválida.',422);$ok=integer($a,'es_correcta',0,1);$correct+=$ok;$normalized[]=['texto'=>txt($a,'texto',500),'es_correcta'=>$ok];}
- if($correct!==1)respond(null,'Debe existir exactamente una alternativa correcta.',422);$options=$normalized;
+
+$id_curso = 0;
+$id_topico = 0;
+$id_leccion = 0;
+$id_rol = 0;
+$nombre = '';
+$apellido = '';
+$usuario = '';
+$descripcion = '';
+$titulo = '';
+$contenido = '';
+$enunciado = '';
+$orden = 1;
+$estado = 1;
+$cambiarPassword = false;
+$passwordGuardado = '';
+$alternativasValidadas = [];
+
+// Validar los datos antes de guardarlos.
+switch ($recurso) {
+    case 'cursos':
+        $nombre = txt($datos, 'nombre', 150);
+        $descripcion = txt($datos, 'descripcion', 10000, true);
+        $estado = integer($datos, 'estado', 0, 1);
+        break;
+
+    case 'topicos':
+        $id_curso = integer($datos, 'id_curso');
+        $nombre = txt($datos, 'nombre', 150);
+        $descripcion = txt($datos, 'descripcion', 10000, true);
+        $orden = integer($datos, 'orden', 1, 10000);
+        $estado = integer($datos, 'estado', 0, 1);
+
+        if (!rows('SELECT id_curso FROM cursos WHERE id_curso = ?', [$id_curso])) {
+            respond(null, 'El registro padre no existe.', 422);
+        }
+        break;
+
+    case 'lecciones':
+        $id_topico = integer($datos, 'id_topico');
+        $titulo = txt($datos, 'titulo', 200);
+        $contenido = txt($datos, 'contenido', 50000, true);
+        $orden = integer($datos, 'orden', 1, 10000);
+        $estado = integer($datos, 'estado', 0, 1);
+
+        if (!rows('SELECT id_topico FROM topicos WHERE id_topico = ?', [$id_topico])) {
+            respond(null, 'El registro padre no existe.', 422);
+        }
+        break;
+
+    case 'preguntas':
+        $id_leccion = integer($datos, 'id_leccion');
+        $enunciado = txt($datos, 'enunciado', 4000);
+        $orden = integer($datos, 'orden', 1, 10000);
+        $estado = integer($datos, 'estado', 0, 1);
+
+        if (!rows('SELECT id_leccion FROM lecciones WHERE id_leccion = ?', [$id_leccion])) {
+            respond(null, 'El registro padre no existe.', 422);
+        }
+
+        $alternativas = $datos['alternativas'] ?? [];
+        if (!is_array($alternativas) || !array_is_list($alternativas) || count($alternativas) < 2 || count($alternativas) > 6) {
+            respond(null, 'La pregunta requiere de 2 a 6 alternativas.', 422);
+        }
+
+        $correctas = 0;
+        $alternativasValidadas = [];
+        foreach ($alternativas as $alternativa) {
+            if (!is_array($alternativa)) {
+                respond(null, 'Alternativa invalida.', 422);
+            }
+            $texto = txt($alternativa, 'texto', 500);
+            $esCorrecta = integer($alternativa, 'es_correcta', 0, 1);
+            $correctas += $esCorrecta;
+            $alternativasValidadas[] = ['texto' => $texto, 'es_correcta' => $esCorrecta];
+        }
+        if ($correctas !== 1) {
+            respond(null, 'Debe existir exactamente una alternativa correcta.', 422);
+        }
+        break;
+
+    case 'usuarios':
+        $id_rol = integer($datos, 'id_rol');
+        $nombre = txt($datos, 'nombre', 100);
+        $apellido = txt($datos, 'apellido', 100);
+        $usuario = txt($datos, 'usuario', 50);
+        $estado = integer($datos, 'estado', 0, 1);
+
+        if (!in_array($id_rol, [1, 2], true)) {
+            respond(null, 'Rol invalido.', 422);
+        }
+        if ($id === $administrador['id_usuario'] && ($estado === 0 || $id_rol !== 1)) {
+            respond(null, 'No puedes quitarte el acceso de administrador.', 422);
+        }
+
+        $password = $datos['password'] ?? '';
+        if (!is_string($password)) {
+            respond(null, 'Contraseña invalida.', 422);
+        }
+        $cambiarPassword = $metodo === 'POST' || $password !== '';
+        if ($cambiarPassword) {
+            if (strlen($password) < 8 || strlen($password) > 72) {
+                respond(null, 'La contraseña debe tener entre 8 y 72 bytes.', 422);
+            }
+            $passwordGuardado = password_hash($password, PASSWORD_DEFAULT);
+        }
+        break;
 }
+
+// La transaccion permite guardar todos los cambios juntos.
 $conexion->begin_transaction();
-if($method==='POST'){
- $cols=implode(',',array_keys($values));$marks=implode(',',array_fill(0,count($values),'?'));
- query("INSERT INTO $resource($cols) VALUES($marks)",array_values($values));$id=$conexion->insert_id;
-}else{
- $assign=implode(',',array_map(fn($f)=>"$f=?",array_keys($values)));query("UPDATE $resource SET $assign WHERE $pk=?",array_merge(array_values($values),[$id]));
+try {
+    switch ($recurso) {
+        case 'cursos':
+            if ($metodo === 'POST') {
+                query(
+                    'INSERT INTO cursos (nombre, descripcion, estado) VALUES (?, ?, ?)',
+                    [$nombre, $descripcion, $estado]
+                );
+                $id = (int) $conexion->insert_id;
+            } else {
+                query(
+                    'UPDATE cursos SET nombre = ?, descripcion = ?, estado = ? WHERE id_curso = ?',
+                    [$nombre, $descripcion, $estado, $id]
+                );
+            }
+            break;
+
+        case 'topicos':
+            if ($metodo === 'POST') {
+                query(
+                    'INSERT INTO topicos (id_curso, nombre, descripcion, orden, estado) VALUES (?, ?, ?, ?, ?)',
+                    [$id_curso, $nombre, $descripcion, $orden, $estado]
+                );
+                $id = (int) $conexion->insert_id;
+            } else {
+                query(
+                    'UPDATE topicos SET id_curso = ?, nombre = ?, descripcion = ?, orden = ?, estado = ? WHERE id_topico = ?',
+                    [$id_curso, $nombre, $descripcion, $orden, $estado, $id]
+                );
+            }
+            break;
+
+        case 'lecciones':
+            if ($metodo === 'POST') {
+                query(
+                    'INSERT INTO lecciones (id_topico, titulo, contenido, orden, estado) VALUES (?, ?, ?, ?, ?)',
+                    [$id_topico, $titulo, $contenido, $orden, $estado]
+                );
+                $id = (int) $conexion->insert_id;
+            } else {
+                query(
+                    'UPDATE lecciones SET id_topico = ?, titulo = ?, contenido = ?, orden = ?, estado = ? WHERE id_leccion = ?',
+                    [$id_topico, $titulo, $contenido, $orden, $estado, $id]
+                );
+            }
+            break;
+
+        case 'preguntas':
+            if ($metodo === 'POST') {
+                query(
+                    'INSERT INTO preguntas (id_leccion, enunciado, orden, estado) VALUES (?, ?, ?, ?)',
+                    [$id_leccion, $enunciado, $orden, $estado]
+                );
+                $id = (int) $conexion->insert_id;
+            } else {
+                query(
+                    'UPDATE preguntas SET id_leccion = ?, enunciado = ?, orden = ?, estado = ? WHERE id_pregunta = ?',
+                    [$id_leccion, $enunciado, $orden, $estado, $id]
+                );
+            }
+            query('DELETE FROM alternativas WHERE id_pregunta = ?', [$id]);
+            foreach ($alternativasValidadas as $alternativa) {
+                query(
+                    'INSERT INTO alternativas (id_pregunta, texto, es_correcta) VALUES (?, ?, ?)',
+                    [$id, $alternativa['texto'], $alternativa['es_correcta']]
+                );
+            }
+            break;
+
+        case 'usuarios':
+            if ($metodo === 'POST') {
+                query(
+                    'INSERT INTO usuarios (id_rol, nombre, apellido, usuario, estado, password) VALUES (?, ?, ?, ?, ?, ?)',
+                    [$id_rol, $nombre, $apellido, $usuario, $estado, $passwordGuardado]
+                );
+                $id = (int) $conexion->insert_id;
+            } elseif ($cambiarPassword) {
+                query(
+                    'UPDATE usuarios SET id_rol = ?, nombre = ?, apellido = ?, usuario = ?, estado = ?, password = ? WHERE id_usuario = ?',
+                    [$id_rol, $nombre, $apellido, $usuario, $estado, $passwordGuardado, $id]
+                );
+            } else {
+                query(
+                    'UPDATE usuarios SET id_rol = ?, nombre = ?, apellido = ?, usuario = ?, estado = ? WHERE id_usuario = ?',
+                    [$id_rol, $nombre, $apellido, $usuario, $estado, $id]
+                );
+            }
+            if ($cambiarPassword) {
+                query('DELETE FROM sesiones WHERE id_usuario = ?', [$id]);
+            }
+            break;
+    }
+    $conexion->commit();
+} catch (Throwable $error) {
+    $conexion->rollback();
+    throw $error;
 }
-if($resource==='preguntas'){
- query('DELETE FROM alternativas WHERE id_pregunta=?',[$id]);
- foreach($options as $a)query('INSERT INTO alternativas(id_pregunta,texto,es_correcta) VALUES(?,?,?)',[$id,$a['texto'],$a['es_correcta']]);
-}
-if($resource==='usuarios' && isset($values['password']))query('DELETE FROM sesiones WHERE id_usuario=?',[$id]);
-$conexion->commit();respond(['id'=>$id],'Registro guardado.',$method==='POST'?201:200);
+
+respond(['id' => $id], 'Registro guardado.', $metodo === 'POST' ? 201 : 200);

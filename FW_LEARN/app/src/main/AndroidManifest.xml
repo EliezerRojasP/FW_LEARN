@@ -6,20 +6,25 @@
 
     <application
         android:allowBackup="false"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/nombre_app"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FOUR_WAYS_LEARN"
+        android:theme="@style/Tema.FOUR_WAYS_LEARN"
         android:usesCleartextTraffic="false">
 
         <activity android:name=".admin.AdminContentActivity" android:exported="false" />
 
         <activity android:name=".ui.AccountActivity" android:exported="false" />
         <activity android:name=".alumno.ProgresoActivity" android:exported="false" />
-        <activity android:name=".admin.AdminListActivity" android:exported="false" />
+        <activity android:name=".admin.AdminPreguntasActivity" android:exported="false" />
+        <activity android:name=".admin.AdminCursosActivity" android:exported="false" />
+        <activity android:name=".admin.AdminTemasActivity" android:exported="false" />
+        <activity android:name=".admin.AdminLeccionesActivity" android:exported="false" />
+        <activity android:name=".admin.AdminUsuariosActivity" android:exported="false" />
+        <activity android:name=".admin.AdminResultadosActivity" android:exported="false" />
+        <activity android:name=".admin.AdminEstadisticasActivity" android:exported="false" />
+        <activity android:name=".ui.MisMensajesActivity" android:exported="false" />
         <!-- Pantalla de administración -->
         <activity
             android:name=".admin.AdminActivity"
@@ -30,15 +35,6 @@
             android:name=".alumno.BienvenidaActivity"
             android:exported="false" />
 
-        <!-- Pantalla de temas -->
-        <activity
-            android:name=".alumno.TemasActivity"
-            android:exported="false" />
-
-        <!-- Detalle del tema -->
-        <activity
-            android:name=".alumno.DetalleTemaActivity"
-            android:exported="false" />
         <activity
             android:name=".alumno.AprendizajeActivity"
             android:exported="false" />
@@ -47,9 +43,6 @@
             android:exported="false" />
         <activity
             android:name=".alumno.CursoDetalleActivity"
-            android:exported="false" />
-        <activity
-            android:name=".alumno.TopicosActivity"
             android:exported="false" />
         <activity
             android:name=".alumno.LeccionesActivity"

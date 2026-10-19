@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lecciones · Four Ways Learn</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <script defer src="js/config.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/comun.js"></script>
+    <script defer src="js/secciones.js"></script>
+    <script defer src="js/lecciones.js"></script>
+  </head>
+  <body>
+    <p id="mensaje" class="mensaje" role="alert" hidden></p>
+    <button
+      id="reintentar"
+      class="boton-secundario reintentar"
+      onclick="window.location.reload()"
+      hidden
+    >
+      Volver a intentar
+    </button>
+    <div id="aplicacion" hidden>
+      <aside class="menu">
+        <a href="panel.html" class="marca"
+          ><span class="logo">&lt;/&gt;</span
+          ><span>Four Ways<br />Learn</span></a
+        >
+        <small>ADMINISTRACIÓN</small>
+        <nav aria-label="Menú principal">
+             <a href="panel.html" class="activo">Panel principal</a>
+                <a href="usuarios.html">Usuarios</a>
+                <a href="cursos.html">Cursos</a>
+                <a href="temas.html">Temas</a>
+                <a href="lecciones.html">Lecciones</a>
+                <a href="preguntas.html">Preguntas</a>
+                <a href="resultados.html">Resultados</a>
+                <a href="estadisticas.html">Estadísticas</a>
+                <a href="mensaje_recibidos.html">Mensaje Recibidos</a>
+                <a href="cuenta.html">Mi cuenta</a>
+        </nav>
+        <div class="consejo">
+          <strong>Cada lección abre una posibilidad</strong>
+          <p>Organiza el contenido y acompaña el aprendizaje.</p>
+        </div>
+        <button class="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+      </aside>
+      <div class="contenedor">
+        <header class="cabecera">
+          <div><small>Administración</small><strong>Lecciones</strong></div>
+          <a href="cuenta.html" class="cuenta"
+            ><span class="insignia">ADMIN</span><span id="nombre_admin"></span
+          ></a>
+        </header>
+        <main>
+          <div class="encabezado">
+            <div>
+              <h1>Lecciones</h1>
+              <p class="ayuda">Gestiona lecciones de Four Ways Learn.</p>
+            </div>
+            <button id="nuevo" class="boton" onclick="nuevaLeccion()" disabled>
+              Crear lección
+            </button>
+          </div>
+          <section id="lista" class="tarjeta">
+            <div class="filtros">
+              <input
+                id="buscar"
+                type="search"
+                placeholder="Buscar lecciones…"
+                aria-label="Buscar lecciones"
+                oninput="filtrarLecciones()"
+              /><select
+                id="filtro_estado"
+                aria-label="Filtrar por estado"
+                onchange="filtrarLecciones()"
+              >
+                <option value="todos">Todos</option>
+                <option value="1">Activos</option>
+                <option value="0">Inactivos</option>
+              </select>
+            </div>
+            <div class="tabla">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Lección</th>
+                    <th>Detalle</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="tabla_registros"></tbody>
+              </table>
+            </div>
+            <div id="contador" class="contador">Cargando datos…</div>
+          </section>
+          <section id="editor" hidden>
+            <h2 id="titulo_editor">Crear lección</h2>
+            <form
+              id="formulario"
+              onsubmit="guardarLeccion(event)"
+              oninput="hayCambios = true"
+              onchange="hayCambios = true"
+            >
+              <input id="id_registro" type="hidden" value="0" />
+              <div class="columnas">
+                <div class="tarjeta">
+                  <div class="tarjeta-titulo">
+                    <h3>Información del registro</h3>
+                  </div>
+                  <div class="tarjeta-cuerpo">
+                    <div class="dos-campos">
+                      <label for="id_curso"
+                        >Curso<select id="id_curso" required>
+                          <option value="">Seleccionar</option>
+                        </select></label
+                      ><label for="id_topico"
+                        >Tema<select id="id_topico" required>
+                          <option value="">Seleccionar</option>
+                        </select></label
+                      >
+                    </div>
+                    <label for="titulo"
+                      >Título de la lección<input
+                        id="titulo"
+                        type="text"
+                        maxlength="200"
+                        required /></label
+                    ><label for="orden"
+                      >Orden dentro del tema<input
+                        id="orden"
+                        type="number"
+                        min="1"
+                        max="10000"
+                        required
+                        value="1"
+                    /></label>
+                    <div class="pestanas" aria-label="Secciones de la lección">
+                      <button
+                        id="boton_contenido"
+                        type="button"
+                        class="seleccionada"
+                        aria-pressed="true"
+                        onclick="mostrarSeccion('contenido')"
+                      >
+                        Contenido
+                      </button>
+                      <button
+                        id="boton_ejemplo"
+                        type="button"
+                        aria-pressed="false"
+                        onclick="mostrarSeccion('ejemplo')"
+                      >
+                        Ejemplo
+                      </button>
+                      <button
+                        id="boton_practica"
+                        type="button"
+                        aria-pressed="false"
+                        onclick="mostrarSeccion('practica')"
+                      >
+                        Práctica
+                      </button>
+                    </div>
+                    <div id="seccion_contenido">
+                      <label for="contenido"
+                        >Contenido de la lección<textarea
+                          id="contenido"
+                          maxlength="50000"
+                          class="texto-leccion"
+                        ></textarea>
+                      </label>
+                    </div>
+                    <div id="seccion_ejemplo" hidden>
+                      <label for="ejemplo"
+                        >Ejemplo<textarea
+                          id="ejemplo"
+                          maxlength="50000"
+                          class="texto-leccion codigo"
+                        ></textarea>
+                      </label>
+                    </div>
+                    <div id="seccion_practica" hidden>
+                      <label for="practica"
+                        >Práctica<textarea
+                          id="practica"
+                          maxlength="50000"
+                          class="texto-leccion"
+                        ></textarea></label
+                      ><label for="explicacion"
+                        >Explicación<textarea
+                          id="explicacion"
+                          maxlength="50000"
+                          class=""
+                        ></textarea>
+                      </label>
+                    </div>
+                    <p class="ayuda">
+                      Las cuatro secciones se guardan juntas en el campo
+                      contenido, como en Android.
+                    </p>
+                  </div>
+                </div>
+                <aside>
+                  <section class="tarjeta">
+                    <div class="tarjeta-titulo"><h3>Publicación</h3></div>
+                    <div class="tarjeta-cuerpo">
+                      <label class="casilla"
+                        ><input id="estado" type="checkbox" checked />Registro
+                        activo</label
+                      >
+                      <p class="ayuda">
+                        Desactiva el registro para conservar su historial.
+                      </p>
+                      <a id="vista_previa" href="vista_leccion.html" hidden
+                        >Vista previa guardada</a
+                      >
+                    </div>
+                  </section>
+                  <section class="tarjeta">
+                    <div class="tarjeta-titulo">
+                      <h3>Preguntas asociadas</h3>
+                    </div>
+                    <div class="tarjeta-cuerpo">
+                      <div id="preguntas_asociadas"></div>
+                      <a id="crear_pregunta" class="boton-secundario" hidden
+                        >Crear pregunta</a
+                      >
+                      <p id="aviso_preguntas" class="ayuda">
+                        Guarda primero la lección para agregar preguntas.
+                      </p>
+                    </div>
+                  </section>
+                </aside>
+              </div>
+              <div class="acciones">
+                <button
+                  id="desactivar"
+                  type="button"
+                  class="boton-peligro"
+                  onclick="desactivarLeccion()"
+                  hidden
+                >
+                  Desactivar registro</button
+                >
+                <button
+                  id="eliminar"
+                  type="button"
+                  class="boton-peligro"
+                  onclick="eliminarLeccion()"
+                  hidden>
+                  Eliminar definitivamente
+                  </button>
+                <button
+                  id="cancelar"
+                  type="button"
+                  class="boton-secundario"
+                  onclick="cancelarEdicion()"
+                >
+                  Cancelar</button
+                ><button id="guardar" class="boton" type="submit">
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </section>
+        </main>
+        <footer>Four Ways Learn · Panel del administrador</footer>
+      </div>
+    </div>
+  </body>
+</html>

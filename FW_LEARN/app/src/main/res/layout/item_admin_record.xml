@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.FW.Card"
+    style="@style/Widget.FW.Tarjeta"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
+    android:layout_marginBottom="@dimen/espacio_12"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/fw_card">
+    app:cardBackgroundColor="@color/fw_tarjeta">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/espacio_16">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,57 +25,57 @@
                 android:id="@+id/avatar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/bg_avatar"
+                android:background="@drawable/fondo_avatar"
                 android:gravity="center"
                 android:importantForAccessibility="no"
-                android:textColor="@color/fw_blue"
-                android:textSize="21sp"
+                android:textColor="@color/fw_azul"
+                android:textSize="@dimen/texto_21"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/espacio_12"
+                android:layout_marginEnd="@dimen/espacio_8"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/recordTitle"
+                    android:id="@+id/tituloRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/fw_ink"
-                    android:textSize="16sp"
+                    android:textColor="@color/fw_tinta"
+                    android:textSize="@dimen/texto_16"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/recordDetail"
+                    android:id="@+id/detalleRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/fw_muted"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="@dimen/espacio_4"
+                    android:textColor="@color/fw_apagado"
+                    android:textSize="@dimen/texto_12" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/recordState"
+                android:id="@+id/estadoRegistro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_badge"
-                android:paddingStart="8dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="5dp"
-                android:textColor="@color/fw_green"
-                android:textSize="11sp" />
+                android:background="@drawable/fondo_insignia"
+                android:paddingStart="@dimen/espacio_8"
+                android:paddingTop="@dimen/espacio_5"
+                android:paddingEnd="@dimen/espacio_8"
+                android:paddingBottom="@dimen/espacio_5"
+                android:textColor="@color/fw_verde"
+                android:textSize="@dimen/texto_11" />
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="10dp"
+                android:layout_width="@dimen/espacio_20"
+                android:layout_height="@dimen/espacio_20"
+                android:layout_marginStart="@dimen/espacio_10"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_fw_edit"
-                app:tint="@color/fw_muted" />
+                android:src="@drawable/icono_editar"
+                app:tint="@color/fw_apagado" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

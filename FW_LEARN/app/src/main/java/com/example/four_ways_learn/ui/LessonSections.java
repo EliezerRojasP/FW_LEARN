@@ -3,7 +3,7 @@ package com.example.four_ways_learn.ui;
 import java.text.Normalizer;
 import java.util.Locale;
 
-/** Splits the existing single database field; no schema migration is needed. */
+
 public final class LessonSections {
     public final String content, example, practice, explanation;
     private final String exampleHeading, practiceHeading, explanationHeading;
@@ -21,14 +21,13 @@ public final class LessonSections {
             String title = line.trim();
             String key = Normalizer.normalize(title, Normalizer.Form.NFD).replaceAll("\\p{M}", "").toUpperCase(Locale.ROOT);
             int section = -1;
-            // Only stand-alone uppercase headings are separators, never a sentence or code fragment.
+
             if (title.equals(title.toUpperCase(Locale.ROOT))) {
                 if (key.matches("EJEMPLOS?(?:\\s+(?:EN\\s+.+|SQL|KOTLIN|PYTHON|HTML|CSS|JAVA)|\\s*:\\s*.+)?") || key.equals("EN TU PROYECTO")) section = 1;
                 else if (key.matches("PRACTICA:?") || key.matches("PRACTICA\\s+.+")) section = 2;
                 else if (key.matches("EXPLICACION:?")) section = 3;
                 else if (key.equals("CONTENIDO")) section = 0;
             }
-            // Do not drop a repeated heading: retain its text in the current section.
             if (section >= 0 && section != current && parts[section].length() == 0) {
                 current = section; headings[section] = title;
             } else parts[current].append(line).append('\n');

@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.FW.Card"
+    style="@style/Widget.FW.Tarjeta"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="18dp"
-    app:cardBackgroundColor="@color/fw_navy"
+    android:layout_marginBottom="@dimen/espacio_18"
+    app:cardBackgroundColor="@color/fw_marino"
     app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="@dimen/espacio_20">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,75 +29,75 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/continue_learning"
-                    android:textColor="@color/fw_on_navy"
-                    android:textSize="14sp" />
+                    android:text="@string/continuar_aprendiendo"
+                    android:textColor="@color/fw_sobre_marino"
+                    android:textSize="@dimen/texto_14" />
 
                 <TextView
-                    android:id="@+id/featuredTitle"
+                    android:id="@+id/tituloDestacado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/fw_on_navy"
-                    android:textSize="22sp"
+                    android:layout_marginTop="@dimen/espacio_8"
+                    android:textColor="@color/fw_sobre_marino"
+                    android:textSize="@dimen/texto_22"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/featuredCourse"
+                    android:id="@+id/cursoDestacado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:textColor="@color/fw_on_navy"
-                    android:textSize="13sp" />
+                    android:layout_marginTop="@dimen/espacio_6"
+                    android:textColor="@color/fw_sobre_marino"
+                    android:textSize="@dimen/texto_13" />
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/featuredIcon"
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_admin_badge"
+                android:id="@+id/iconoDestacado"
+                android:layout_width="@dimen/espacio_66"
+                android:layout_height="@dimen/espacio_66"
+                android:layout_marginStart="@dimen/espacio_8"
+                android:background="@drawable/fondo_insignia_admin"
                 android:importantForAccessibility="no"
-                android:padding="14dp"
-                android:src="@drawable/ic_fw_code"
-                app:tint="@color/fw_blue" />
+                android:padding="@dimen/espacio_14"
+                android:src="@drawable/icono_codigo"
+                app:tint="@color/fw_azul" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/continueButton"
+            android:id="@+id/botonContinuar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="@string/action_continue"
-            android:textColor="@color/fw_on_mint"
-            app:backgroundTint="@color/fw_mint" />
+            android:layout_marginTop="@dimen/espacio_18"
+            android:text="@string/accion_continuar"
+            android:textColor="@color/fw_sobre_menta"
+            app:backgroundTint="@color/fw_menta" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="@string/progress_summary_title"
-            android:textColor="@color/fw_on_navy"
-            android:textSize="14sp"
+            android:layout_marginTop="@dimen/espacio_14"
+            android:text="@string/titulo_resumen_progreso"
+            android:textColor="@color/fw_sobre_marino"
+            android:textSize="@dimen/texto_14"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/featuredCount"
+            android:id="@+id/conteoDestacado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/fw_on_navy"
-            android:textSize="13sp" />
+            android:layout_marginTop="@dimen/espacio_6"
+            android:textColor="@color/fw_sobre_marino"
+            android:textSize="@dimen/texto_13" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/featuredProgress"
+            android:id="@+id/progresoDestacado"
             android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="@dimen/espacio_66"
+            android:layout_marginTop="@dimen/espacio_10"
             android:max="10000"
-            app:indicatorColor="@color/fw_blue"
-            app:trackColor="@color/fw_track"
-            app:trackCornerRadius="4dp"
-            app:trackThickness="7dp" />
+            app:indicatorColor="@color/fw_azul"
+            app:trackColor="@color/fw_pista"
+            app:trackCornerRadius="@dimen/espacio_4"
+            app:trackThickness="@dimen/espacio_7" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resultados · Four Ways Learn</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <script defer src="js/config.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/comun.js"></script>
+    <script defer src="js/resultados.js"></script>
+</head>
+<body>
+    <p id="mensaje" class="mensaje" role="alert" hidden></p>
+    <button id="reintentar" class="boton-secundario reintentar" onclick="window.location.reload()" hidden>Volver a intentar</button>
+    <div id="aplicacion" hidden>
+        <aside class="menu">
+            <a href="panel.html" class="marca"><span class="logo">&lt;/&gt;</span><span>Four Ways<br>Learn</span></a>
+            <small>ADMINISTRACIÓN</small>
+            <nav aria-label="Menú principal">
+                <a href="panel.html" class="activo">Panel principal</a>
+                <a href="usuarios.html">Usuarios</a>
+                <a href="cursos.html">Cursos</a>
+                <a href="temas.html">Temas</a>
+                <a href="lecciones.html">Lecciones</a>
+                <a href="preguntas.html">Preguntas</a>
+                <a href="resultados.html">Resultados</a>
+                <a href="estadisticas.html">Estadísticas</a>
+                <a href="mensaje_recibidos.html">Mensaje Recibidos</a>
+                <a href="cuenta.html">Mi cuenta</a>
+            </nav>
+            <div class="consejo"><strong>Cada lección abre una posibilidad</strong><p>Organiza el contenido y acompaña el aprendizaje.</p></div>
+            <button class="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+        </aside>
+        <div class="contenedor">
+            <header class="cabecera">
+                <div><small>Administración</small><strong>Resultados</strong></div>
+                <a href="cuenta.html" class="cuenta"><span class="insignia">ADMIN</span><span id="nombre_admin"></span></a>
+            </header>
+            <main>
+                <div class="encabezado"><div><h1>Resultados</h1><p class="ayuda">Evaluaciones realizadas desde Android.</p></div><button class="boton-secundario" id="actualizar" onclick="listarResultados()">Actualizar</button></div>
+                <section class="tarjeta"><div class="filtros"><input id="buscar" type="search" placeholder="Buscar alumno o lección…" aria-label="Buscar resultados" oninput="filtrarResultados()"></div><div class="tabla"><table><thead><tr><th>Alumno</th><th>Lección</th><th>Nota</th><th>Porcentaje</th><th>Fecha (UTC)</th></tr></thead><tbody id="tabla_resultados"></tbody></table></div><div id="contador" class="contador">Cargando resultados…</div></section><p class="ayuda">La API devuelve hasta los 200 resultados más recientes. Las fechas se muestran en UTC como las entrega el servidor.</p>
+            </main>
+            <footer>Four Ways Learn · Panel del administrador</footer>
+        </div>
+    </div>
+</body>
+</html>

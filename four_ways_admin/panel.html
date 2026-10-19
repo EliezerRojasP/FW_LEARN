@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel principal · Four Ways Learn</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <script defer src="js/config.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/comun.js"></script>
+    <script defer src="js/panel.js"></script>
+</head>
+<body>
+    <p id="mensaje" class="mensaje" role="alert" hidden></p>
+    <button id="reintentar" class="boton-secundario reintentar" onclick="window.location.reload()" hidden>Volver a intentar</button>
+    <div id="aplicacion" hidden>
+        <aside class="menu">
+            <a href="panel.html" class="marca"><span class="logo">&lt;/&gt;</span><span>Four Ways<br>Learn</span></a>
+            <small>ADMINISTRACIÓN</small>
+            <nav aria-label="Menú principal">
+                <a href="panel.html" class="activo">Panel principal</a>
+                <a href="usuarios.html">Usuarios</a>
+                <a href="cursos.html">Cursos</a>
+                <a href="temas.html">Temas</a>
+                <a href="lecciones.html">Lecciones</a>
+                <a href="preguntas.html">Preguntas</a>
+                <a href="resultados.html">Resultados</a>
+                <a href="estadisticas.html">Estadísticas</a>
+                <a href="mensaje_recibidos.html">Mensaje Recibidos</a>
+                <a href="cuenta.html">Mi cuenta</a>
+            </nav>
+            <div class="consejo"><strong>Cada lección abre una posibilidad</strong><p>Organiza el contenido y acompaña el aprendizaje.</p></div>
+            <button class="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+        </aside>
+        <div class="contenedor">
+            <header class="cabecera">
+                <div><small>Administración</small><strong>Panel principal</strong></div>
+                <a href="cuenta.html" class="cuenta"><span class="insignia">ADMIN</span><span id="nombre_admin"></span></a>
+            </header>
+            <main>
+                <div class="encabezado"><div><h1>Panel de administración</h1><p class="ayuda">Gestiona el contenido y acompaña el aprendizaje.</p></div><a class="boton" href="lecciones.html">Gestionar lecciones</a></div>
+                <div class="resumen">
+                    <div class="tarjeta"><div class="tarjeta-cuerpo"><span>Alumnos activos</span><strong id="total_alumnos" class="numero">—</strong></div></div>
+                    <div class="tarjeta"><div class="tarjeta-cuerpo"><span>Cursos activos</span><strong id="total_cursos" class="numero">—</strong></div></div>
+                    <div class="tarjeta"><div class="tarjeta-cuerpo"><span>Lecciones activas</span><strong id="total_lecciones" class="numero">—</strong></div></div>
+                    <div class="tarjeta"><div class="tarjeta-cuerpo"><span>Preguntas activas</span><strong id="total_preguntas" class="numero">—</strong></div></div>
+                </div>
+                <div class="bienvenida"><div><h2>Hola, <span id="saludo"></span></h2><p>Organiza tus cursos y crea nuevas oportunidades para aprender.</p></div><a class="boton" href="cursos.html">Ver cursos</a></div>
+                <div class="columnas"><section class="tarjeta"><div class="tarjeta-titulo"><h3>Lecciones del catálogo</h3><a href="lecciones.html">Ver todas</a></div><div class="tabla"><table><thead><tr><th>Lección</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="ultimas_lecciones"></tbody></table></div></section><section class="tarjeta"><div class="tarjeta-titulo"><h3>Accesos rápidos</h3></div><div class="tarjeta-cuerpo"><a class="acceso" href="usuarios.html">Gestionar usuarios</a><a class="acceso" href="cursos.html">Organizar cursos</a><a class="acceso" href="temas.html">Gestionar temas</a><a class="acceso" href="preguntas.html">Crear preguntas</a><a class="acceso" href="resultados.html">Consultar resultados</a></div></section></div>
+            </main>
+            <footer>Four Ways Learn · Panel del administrador</footer>
+        </div>
+    </div>
+</body>
+</html>
