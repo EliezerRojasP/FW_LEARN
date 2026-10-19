@@ -182,7 +182,20 @@ Todas las respuestas (excepto `health.php`) siguen este formato:
 
 ## Modelo de datos
 
-### Base de datos (MariaDB)
+### Diagramas
+
+Modelo lógico:
+
+![Modelo lógico de la base de datos](docs/capturas/tabla1.jpeg)
+
+Modelo entidad-relación:
+
+![Modelo entidad-relación de la base de datos](docs/capturas/tabla2.png)
+
+### Esquema en texto (Mermaid)
+
+<details>
+<summary>Ver el diagrama como código Mermaid</summary>
 
 ```mermaid
 erDiagram
@@ -305,6 +318,8 @@ erDiagram
 ```
 
 `INTENTOS_LOGIN` solo registra los intentos de acceso (IP, usuario y fecha); no tiene clave foránea.
+
+</details>
 
 ### Caché local (Android, SQLite)
 
